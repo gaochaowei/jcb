@@ -1,0 +1,27 @@
+<project name="name of project" default="makedb" basedir=".">
+
+	<property file="resources/build.properties" />
+	
+	<path id="compile.classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar" />
+		</fileset>	
+	</path>
+
+	<target name="all" depends="clean" />
+
+	<target name="clean">
+		<echo message="$${user.dir}=${user.dir}"/>
+		<echo message="${basedir}/libclean" />
+		<echo message="$${db.url}=${db.url}"/>
+	</target>
+
+	<target name="makedb">
+		<delete dir="${basedir}/dbf" excludes=".svn" verbose="true"/>
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.password}" print="yes">
+			<classpath refid="compile.classpath"/>
+			<transaction  src="dbscripts/DDL.sql"/>
+		</sql>
+	</target>
+
+</project>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="propertyPlaceholder"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
+		<property name="location" value="build.properties" />
+	</bean>
+	
+	<bean id="test" class="org.chaowei.swima.Test" init-method="sayHelloWorld"/>
+	<bean id="appFrame" class="com.jcb.gui.AppFrame"/>
+
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" >
+    	<property name="driverClassName" value="${db.driver}"/>
+    	<property name="url" value="${db.url}"/>
+    	<property name="username" value="${db.user}"/>
+    	<property name="password" value="${db.password}"/>
+	</bean>
+	
+	<bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    	<property name="dataSource" ref="myDataSource"/>
+    	<property name="mappingResources">
+        	<list>
+            	<value>com/jcb/persistence/bean/equity.hbm.xml</value>
+        	</list>
+    	</property>
+    	<property name="hibernateProperties">
+    		<props>
+    			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+    		</props>
+    	</property>
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    	<property name="sessionFactory">
+        	<ref bean="mySessionFactory"/>
+    	</property>
+	</bean>
+	
+	<bean id="equityDao" class="com.jcb.persistence.dao.EquityDao">
+    	<property name="hibernateTemplate">
+        	<ref bean="hibernateTemplate"/>    
+    	</property>
+	</bean>
+		
+</beans>
