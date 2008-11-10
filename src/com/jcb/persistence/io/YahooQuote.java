@@ -87,11 +87,11 @@ public class YahooQuote {
 			String line;
 			if (hasHeader && !StringUtils.isEmpty(line = in.readLine())) {
 				csv.header = StringUtils.split(line, ",");
-				System.out.println("> "+line);
+				System.out.println("> " + line);
 			}
 			List<String[]> datav = new ArrayList<String[]>();
 			while (!StringUtils.isEmpty(line = in.readLine())) {
-				System.out.println("> "+line);
+				System.out.println("> " + line);
 				datav.add(StringUtils.split(line, ","));
 			}
 			csv.data = new String[datav.size()][];

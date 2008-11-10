@@ -5,7 +5,6 @@ import java.util.List;
 import com.jcb.persistence.bean.Equity;
 import com.jcb.persistence.dao.EquityDao;
 import com.jcb.util.Msg;
-import com.jcb.util.SpringUtils;
 
 public class SpringHibernateTest {
 
@@ -13,7 +12,7 @@ public class SpringHibernateTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		EquityDao equiytDao = (EquityDao) SpringUtils.getBean("equityDao");
+		EquityDao equiytDao = null;
 
 		System.out.println("load equity ...");
 		Equity equity = equiytDao.getEquity(1);
@@ -45,10 +44,10 @@ public class SpringHibernateTest {
 		equity = equiytDao.getEquity(1);
 		System.out.println(equity);
 
-		List<Equity> all =  equiytDao.getAll();
+		List<Equity> all = equiytDao.getAll();
 		System.out.println(all);
-		System.out.println("${test}="+Msg.get("test"));
-		
+		System.out.println("${test}=" + Msg.get("test"));
+
 	}
 
 }
