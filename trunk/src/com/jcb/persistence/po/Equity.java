@@ -1,4 +1,4 @@
-package com.jcb.persistence.bean;
+package com.jcb.persistence.po;
 
 public class Equity {
 	private int id;

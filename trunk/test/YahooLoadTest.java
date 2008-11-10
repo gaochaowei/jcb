@@ -2,9 +2,9 @@
 
 import java.util.List;
 
-import com.jcb.persistence.bean.Equity;
 import com.jcb.persistence.dao.EquityDao;
 import com.jcb.persistence.io.YahooQuote;
+import com.jcb.persistence.po.Equity;
 
 public class YahooLoadTest {
 	public static void main(String[] args) {
