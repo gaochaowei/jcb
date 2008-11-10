@@ -1,6 +1,6 @@
 <project name="name of project" default="makedb" basedir=".">
 
-	<property file="resources/build.properties" />
+	<property file="src/system.properties" />
 	
 	<path id="compile.classpath">
 		<fileset dir="${basedir}/lib">
