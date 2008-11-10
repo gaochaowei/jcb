@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jcb.market.data.object.Price;
 import com.jcb.market.data.object.PricePK;
-import com.jcb.persistence.bean.Equity;
+import com.jcb.persistence.po.Equity;
 import com.jcb.util.CommonUtils;
 
 public class YahooQuote {

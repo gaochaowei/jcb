@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import com.jcb.persistence.bean.Equity;
+import com.jcb.persistence.po.Equity;
 import com.jcb.util.HibernateUtil;
 
 public class EquityDao {
