@@ -38,6 +38,7 @@ public class JacobApp {
 	private JMenu dataMenu = null;
 	private JMenuItem importMenuItem = null;
 	private JMenuItem editMenuItem = null;
+
 	/**
 	 * This method initializes jFrame
 	 * 
@@ -69,9 +70,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jJMenuBar	
-	 * 	
-	 * @return javax.swing.JMenuBar	
+	 * This method initializes jJMenuBar
+	 * 
+	 * @return javax.swing.JMenuBar
 	 */
 	private JMenuBar getJJMenuBar() {
 		if (jJMenuBar == null) {
@@ -85,9 +86,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenu	
-	 * 	
-	 * @return javax.swing.JMenu	
+	 * This method initializes jMenu
+	 * 
+	 * @return javax.swing.JMenu
 	 */
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
@@ -100,9 +101,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenu	
-	 * 	
-	 * @return javax.swing.JMenu	
+	 * This method initializes jMenu
+	 * 
+	 * @return javax.swing.JMenu
 	 */
 	private JMenu getEditMenu() {
 		if (editMenu == null) {
@@ -116,9 +117,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenu	
-	 * 	
-	 * @return javax.swing.JMenu	
+	 * This method initializes jMenu
+	 * 
+	 * @return javax.swing.JMenu
 	 */
 	private JMenu getHelpMenu() {
 		if (helpMenu == null) {
@@ -130,9 +131,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getExitMenuItem() {
 		if (exitMenuItem == null) {
@@ -148,9 +149,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getAboutMenuItem() {
 		if (aboutMenuItem == null) {
@@ -171,8 +172,8 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes aboutDialog	
-	 * 	
+	 * This method initializes aboutDialog
+	 * 
 	 * @return javax.swing.JDialog
 	 */
 	private JDialog getAboutDialog() {
@@ -199,9 +200,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes aboutVersionLabel	
-	 * 	
-	 * @return javax.swing.JLabel	
+	 * This method initializes aboutVersionLabel
+	 * 
+	 * @return javax.swing.JLabel
 	 */
 	private JLabel getAboutVersionLabel() {
 		if (aboutVersionLabel == null) {
@@ -213,9 +214,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getCutMenuItem() {
 		if (cutMenuItem == null) {
@@ -228,9 +229,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getCopyMenuItem() {
 		if (copyMenuItem == null) {
@@ -243,9 +244,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getPasteMenuItem() {
 		if (pasteMenuItem == null) {
@@ -258,9 +259,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes jMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getSaveMenuItem() {
 		if (saveMenuItem == null) {
@@ -273,9 +274,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes dataMenu	
-	 * 	
-	 * @return javax.swing.JMenu	
+	 * This method initializes dataMenu
+	 * 
+	 * @return javax.swing.JMenu
 	 */
 	private JMenu getDataMenu() {
 		if (dataMenu == null) {
@@ -288,9 +289,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes importMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes importMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getImportMenuItem() {
 		if (importMenuItem == null) {
@@ -301,9 +302,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes editMenuItem	
-	 * 	
-	 * @return javax.swing.JMenuItem	
+	 * This method initializes editMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getEditMenuItem() {
 		if (editMenuItem == null) {
