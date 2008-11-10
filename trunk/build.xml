@@ -12,7 +12,7 @@
 
 	<target name="clean">
 		<echo message="$${user.dir}=${user.dir}"/>
-		<echo message="${basedir}/libclean" />
+		<echo message="$${basedir}=${basedir}" />
 		<echo message="$${db.url}=${db.url}"/>
 	</target>
 

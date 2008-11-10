@@ -2,24 +2,34 @@ package com.jcb.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+
 import com.jcb.persistence.bean.Equity;
+import com.jcb.util.HibernateUtil;
 
 public class EquityDao {
 
-	public List<Equity> getAll() {
-		return null;
+	public static List<Equity> getAll() {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Criteria criteria = session.createCriteria(Equity.class);
+		return criteria.list();
 	}
 
-	public Equity getEquity(final int id) {
-		return null;
+	public static Equity getEquity(final int id) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		return (Equity) session.get(Equity.class, id);
 	}
 
-	public void saveOrUpdate(final Equity equity) {
-
+	public static void saveOrUpdate(final Equity equity) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.saveOrUpdate(equity);
 	}
 
-	public void deleteEquity(final Equity equity) {
-
+	public static void deleteEquity(final Equity equity) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.delete(equity);
 	}
 
 }
