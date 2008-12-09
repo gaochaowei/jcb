@@ -39,17 +39,17 @@ public class Money extends JFrame implements ActionListener {
 		MoneyPanel chartPanel = new MoneyPanel();
 		GXYPanel xyPanel = new GXYPanel();
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		chartPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
-		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
+//		tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//		chartPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+//		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 		xyPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 		tabbedPane.addTab("Price", new ImageIcon("images/icons/market.gif"),
 				chartPanel, "Price");
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		tabbedPane
 				.addTab("Function", new ImageIcon("images/icons/function.gif"),
 						xyPanel, "Function");
-		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
+		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		// Create a panel and add components to it.
 		JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setBorder(BorderFactory.createLineBorder(Color.red));
