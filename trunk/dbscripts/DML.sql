@@ -25,4 +25,15 @@ insert into APP.HDB_TOWN (id, name) values (23,'Serangoon');
 insert into APP.HDB_TOWN (id, name) values (24,'Tampines');
 insert into APP.HDB_TOWN (id, name) values (25,'Toa Payoh');
 insert into APP.HDB_TOWN (id, name) values (26,'Woodlands');
-insert into APP.HDB_TOWN (id, name) values (1,'Yishun');
+insert into APP.HDB_TOWN (id, name) values (27,'Yishun');
+
+delete from APP.HDB_TYPE;
+insert into APP.HDB_TYPE(ref,name) values ('01','1 Room');
+insert into APP.HDB_TYPE(ref,name) values ('02','2 Room');
+insert into APP.HDB_TYPE(ref,name) values ('03','3 Room');
+insert into APP.HDB_TYPE(ref,name) values ('04','4 Room');
+insert into APP.HDB_TYPE(ref,name) values ('05','5 Room');
+insert into APP.HDB_TYPE(ref,name) values ('06','Executive');
+insert into APP.HDB_TYPE(ref,name) values ('07','HUDC');
+insert into APP.HDB_TYPE(ref,name) values ('08','Multi-Generation');
+

@@ -21,6 +21,7 @@
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.password}" print="yes">
 			<classpath refid="compile.classpath"/>
 			<transaction  src="dbscripts/DDL.sql"/>
+			<transaction  src="dbscripts/DML.sql"/>
 		</sql>
 	</target>
 

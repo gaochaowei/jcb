@@ -16,25 +16,30 @@ create table APP.PRICE (
     TRADE_VOLUMN INTEGER
 );
 
-create table APP.HDB_TRANSECTION (
+create table APP.HDB_RESALES (
+	town varchar(30),
 	street varchar(50),
 	story varchar(10),
-	hdb_type VARCHAR(20),
+	hdb_type varchar(10),
 	floor_area float,
-	Lease_Commence_date date,
-	resale_price integer,
-	resale_approval_dt date,
-
+	lease_commence_dt date,
+	resale_price int,
+	resale_approval_dt date
 );
 
 create table APP.HDB_STREET(
 	id int primary key,
-	varchar(30) not null
+	name varchar(30) not null
 );
 
 create table APP.HDB_TOWN(
 	id int primary key,
-	varchar(30) not null
+	name varchar(30) not null
+);
+
+create table APP.HDB_TYPE (
+	REF varchar(10) primary key,
+	NAME varchar(30)
 );
 
 ALTER TABLE APP.PRICE ADD CONSTRAINT PRICE_PRIMARY_KEY PRIMARY KEY (EQUITY, TRADE_DT);
