@@ -17,14 +17,16 @@ create table APP.PRICE (
 );
 
 create table APP.HDB_RESALES (
-	town varchar(30),
+	blk varchar(10),	
 	street varchar(50),
 	story varchar(10),
+	town varchar(30),	
 	hdb_type varchar(10),
 	floor_area float,
 	lease_commence_dt date,
 	resale_price int,
-	resale_approval_dt date
+	resale_approval_dt date,
+	create_dt timestamp
 );
 
 create table APP.HDB_STREET(
