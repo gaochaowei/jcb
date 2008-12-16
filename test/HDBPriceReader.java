@@ -25,7 +25,7 @@ public class HDBPriceReader {
 //		System.exit(0);
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:file:data/jacob", "ADMIN", "20082009");
-		PreparedStatement ps = con.prepareStatement("insert into APP.HDB_RESALES (town,street,story,hdb_type,floor_area,lease_commence_dt,resale_price,resale_approval_dt) values (?,?,?,?,?,?,?,?)");
+		PreparedStatement ps = con.prepareStatement("insert into APP.HDB_RESALES (town,street,story,hdb_type,floor_area,lease_commence_dt,resale_price,resale_approval_dt,blk,create_dt) values (?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)");
 		for(ResaleBean resale : resales){
 			ps.setString(1, resale.getTown());
 			ps.setString(2, resale.getStreet());
@@ -35,6 +35,7 @@ public class HDBPriceReader {
 			ps.setDate(6, sqlDate(resale.getLeaseCommenceDate()));
 			ps.setInt(7, resale.getResalePrice());
 			ps.setDate(8, sqlDate(resale.getResaleApprovalDate()));
+			ps.setString(9, resale.getBlk());
 			int status = ps.executeUpdate();
 			System.out.println("insert record : "+status);
 		}
@@ -56,7 +57,7 @@ public class HDBPriceReader {
 			List<HdbTypeBean> hdbTypes = DAO.getHdbTypes();
 			for(TownBean town : towns){
 				for(HdbTypeBean hdbType: hdbTypes){
-					beans.addAll(retrieveResales(town.getName(),hdbType.getRef(),4,1));
+					beans.addAll(retrieveResales(town.getName(),hdbType.getRef(),100,0));
 				}
 			}
 		}catch(Exception e){
