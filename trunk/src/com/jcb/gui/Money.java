@@ -39,9 +39,9 @@ public class Money extends JFrame implements ActionListener {
 		MoneyPanel chartPanel = new MoneyPanel();
 		GXYPanel xyPanel = new GXYPanel();
 		JTabbedPane tabbedPane = new JTabbedPane();
-//		tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-//		chartPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
-//		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
+		// tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+		// chartPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		// tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 		xyPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 		tabbedPane.addTab("Price", new ImageIcon("images/icons/market.gif"),
 				chartPanel, "Price");
