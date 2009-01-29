@@ -1,5 +1,4 @@
 
-
 import java.util.List;
 
 import com.jcb.persistence.dao.EquityDao;
