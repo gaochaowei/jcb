@@ -1,17 +1,15 @@
-
 import java.util.List;
 
-import com.jcb.persistence.dao.EquityDao;
+import org.apache.log4j.Logger;
+
 import com.jcb.persistence.io.YahooQuote;
 import com.jcb.persistence.po.Equity;
 
 public class YahooLoadTest {
 	public static void main(String[] args) {
-		EquityDao equiytDao = null;
+		Logger log = Logger.getLogger(YahooLoadTest.class);
+		log.info("hello world");
 		List<Equity> list = YahooQuote.retrieveEquityList("^STI");
-		System.out.println(list.size());
-		for (Equity eq : list) {
-			equiytDao.saveOrUpdate(eq);
-		}
+		log.info(list);
 	}
 }
