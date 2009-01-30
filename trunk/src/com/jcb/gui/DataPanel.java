@@ -1,7 +1,12 @@
 package com.jcb.gui;
 
+import java.util.List;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import com.jcb.persistence.io.YahooQuote;
+import com.jcb.persistence.po.Equity;
 
 public class DataPanel extends JScrollPane {
 
@@ -23,21 +28,10 @@ public class DataPanel extends JScrollPane {
 	 */
 	private void initialize() {
 		this.setSize(300, 200);
-
-		this.setViewportView(getJTable());
-		getJTable().setFillsViewportHeight(true);
-	}
-
-	/**
-	 * This method initializes jTable
-	 * 
-	 * @return javax.swing.JTable
-	 */
-	private JTable getJTable() {
-		if (jTable == null) {
-			jTable = new JTable();
-		}
-		return jTable;
+		List<Equity> data = YahooQuote.retrieveEquityList("^STI");
+		jTable = new JTable(new BeanTableModel(data,Equity.class));
+		//jTable.setFillsViewportHeight(true);
+		this.setViewportView(jTable);
 	}
 
 }
