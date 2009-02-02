@@ -10,7 +10,7 @@ import com.jcb.bean.HDBTypeBean;
 import com.jcb.util.DBUtils;
 
 public class HDBTypeDAO {
-	public static List<HDBTypeBean> getHDBTypes() throws Exception {
+	public static List<HDBTypeBean> selectHDBTypes() throws Exception {
 		List<HDBTypeBean> beans = new ArrayList<HDBTypeBean>();
 		Connection conn = DBUtils.getConnection();
 		PreparedStatement ps = conn

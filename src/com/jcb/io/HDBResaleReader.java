@@ -24,8 +24,8 @@ public class HDBResaleReader {
 	public static List<HDBResaleBean> fetchResales(int months) {
 		List<HDBResaleBean> beans = new ArrayList<HDBResaleBean>();
 		try {
-			List<HDBTownBean> towns = HDBTownDAO.getHDBTowns();
-			List<HDBTypeBean> hdbTypes = HDBTypeDAO.getHDBTypes();
+			List<HDBTownBean> towns = HDBTownDAO.selectHDBTowns();
+			List<HDBTypeBean> hdbTypes = HDBTypeDAO.selectHDBTypes();
 			for (HDBTownBean town : towns) {
 				for (HDBTypeBean hdbType : hdbTypes) {
 					beans.addAll(fetchResales(town.getName(), hdbType.getRef(),
