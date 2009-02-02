@@ -12,7 +12,7 @@ public class HibernateTest {
 	public static void main(String[] args) {
 
 		System.out.println("load equity ...");
-		EquityBean equity = EquityDAO.getEquity(1);
+		EquityBean equity = EquityDAO.selectEquity(1);
 		System.out.println(equity);
 
 		System.out.println("save equity ...");
@@ -20,28 +20,28 @@ public class HibernateTest {
 		equity.setId(1);
 		equity.setSymbol("C6L.SI");
 		equity.setName("Singapore Airlines Limited");
-		EquityDAO.saveOrUpdate(equity);
+		EquityDAO.save(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDAO.getEquity(1);
+		equity = EquityDAO.selectEquity(1);
 		System.out.println(equity);
 
 		System.out.println("update equity ...");
 		equity.setName("SIA");
-		EquityDAO.saveOrUpdate(equity);
+		EquityDAO.save(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDAO.getEquity(1);
+		equity = EquityDAO.selectEquity(1);
 		System.out.println(equity);
 
 		System.out.println("delete equity ...");
-		EquityDAO.deleteEquity(equity);
+		EquityDAO.delete(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDAO.getEquity(1);
+		equity = EquityDAO.selectEquity(1);
 		System.out.println(equity);
 
-		List<EquityBean> all = EquityDAO.getAll();
+		List<EquityBean> all = EquityDAO.selectEquity();
 		System.out.println(all);
 		System.out.println("${test}=" + Msg.get("test"));
 
