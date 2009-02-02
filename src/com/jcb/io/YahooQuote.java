@@ -1,4 +1,4 @@
-package com.jcb.persistence.io;
+package com.jcb.io;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,9 +11,9 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.jcb.bean.EquityBean;
 import com.jcb.market.data.object.Price;
 import com.jcb.market.data.object.PricePK;
-import com.jcb.persistence.po.Equity;
 import com.jcb.util.CommonUtils;
 
 public class YahooQuote {
@@ -28,15 +28,15 @@ public class YahooQuote {
 		}
 	};
 
-	public static List<Equity> retrieveEquityList(String indexSymbol) {
+	public static List<EquityBean> retrieveEquityList(String indexSymbol) {
 		String url = String
 				.format(
 						"http://download.finance.yahoo.com/d/quotes.csv?s=@%s&f=snl1d1t1c1ohgv",
 						indexSymbol);
 		CSVFile csv = readCSV(url, false);
-		List<Equity> cpv = new ArrayList<Equity>();
+		List<EquityBean> cpv = new ArrayList<EquityBean>();
 		for (String[] ss : csv.data) {
-			Equity eq = new Equity();
+			EquityBean eq = new EquityBean();
 			eq.setSymbol(ss[0]);
 			eq.setName(ss[1]);
 			cpv.add(eq);

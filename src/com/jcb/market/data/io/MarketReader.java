@@ -11,11 +11,11 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.jcb.io.CSVFile;
 import com.jcb.market.data.object.IndexComponent;
 import com.jcb.market.data.object.IndexComponentPK;
 import com.jcb.market.data.object.Price;
 import com.jcb.market.data.object.PricePK;
-import com.jcb.persistence.io.CSVFile;
 import com.jcb.util.CommonUtils;
 
 public class MarketReader {

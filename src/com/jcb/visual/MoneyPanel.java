@@ -31,10 +31,10 @@ import javax.swing.JToolBar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import com.jcb.io.YahooQuote;
+import com.jcb.io.YahooQuote.Frequency;
 import com.jcb.market.data.object.Price;
 import com.jcb.math.GMath;
-import com.jcb.persistence.io.YahooQuote;
-import com.jcb.persistence.io.YahooQuote.Frequency;
 import com.jcb.visual.Axis.Measure;
 
 /**
