@@ -159,7 +159,6 @@ public class Axis {
 		DecimalFormat fmt = new DecimalFormat(pattern);
 		int i0 = (int) Math.ceil(dr.l / d);
 		int i1 = (int) Math.floor(dr.h / d);
-		// System.out.println("i0 = "+i0+" i1 = "+i1+" d = "+d);
 		String[] cals = new String[i1 - i0 + 1];
 		for (int i = 0; i < cals.length; i++) {
 			String label = fmt.format((i + i0) * d);
