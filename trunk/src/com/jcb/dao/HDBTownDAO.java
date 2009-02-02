@@ -10,7 +10,7 @@ import com.jcb.bean.HDBTownBean;
 import com.jcb.util.DBUtils;
 
 public class HDBTownDAO {
-	public static List<HDBTownBean> getHDBTowns() throws Exception {
+	public static List<HDBTownBean> selectHDBTowns() throws Exception {
 		List<HDBTownBean> beans = new ArrayList<HDBTownBean>();
 		Connection conn = DBUtils.getConnection();
 		PreparedStatement ps = conn
