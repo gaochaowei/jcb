@@ -71,7 +71,7 @@ public class Parser {
 		if (s.startsWith("-") || s.startsWith("+")) {
 			s = "x" + s.substring(1);
 		}
-		Stack pt = new Stack();
+		Stack<String> pt = new Stack<String>();
 		for (String[] ops : OPS) {
 			for (int i = 0; i < s.length(); i++) {
 				String tmp = s.substring(i);

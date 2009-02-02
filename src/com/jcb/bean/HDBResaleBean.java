@@ -1,8 +1,10 @@
 package com.jcb.bean;
+
 import java.util.Date;
 
-public class HDBResaleBean {
+public class HDBResaleBean extends BaseBean {
 
+	private static final long serialVersionUID = -3104018004895130390L;
 	private String town;
 	private String street;
 	private String type;

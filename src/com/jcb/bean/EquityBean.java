@@ -1,6 +1,9 @@
 package com.jcb.bean;
 
-public class EquityBean {
+public class EquityBean extends BaseBean {
+
+	private static final long serialVersionUID = 2697585565284168350L;
+
 	private int id;
 	private String symbol;
 	private String name;

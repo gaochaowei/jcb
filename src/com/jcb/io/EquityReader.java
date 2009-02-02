@@ -7,16 +7,14 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.jcb.bean.EquityBean;
-import com.jcb.market.data.object.Price;
-import com.jcb.market.data.object.PricePK;
+import com.jcb.bean.EquityPriceBean;
 import com.jcb.util.CommonUtils;
 
-public class YahooQuote {
+public class EquityReader {
 
 	public enum Frequency {
 
@@ -28,7 +26,7 @@ public class YahooQuote {
 		}
 	};
 
-	public static List<EquityBean> retrieveEquityList(String indexSymbol) {
+	public static List<EquityBean> fetchEquityList(String indexSymbol) {
 		String url = String
 				.format(
 						"http://download.finance.yahoo.com/d/quotes.csv?s=@%s&f=snl1d1t1c1ohgv",
@@ -44,34 +42,32 @@ public class YahooQuote {
 		return cpv;
 	}
 
-	public static Vector<Price> readPrice(String symbol, Date from, Date to,
-			Frequency freq) {
-		int monthFrom = from.getMonth();
-		int monthTo = to.getMonth();
+	public static List<EquityPriceBean> fetchEquityPrice(String symbol,
+			Date from, Date to, Frequency freq) {
+		int monthFrom = CommonUtils.getMonth(from);
+		int monthTo = CommonUtils.getMonth(to);
 		String url = String
 				.format(
 						"http://ichart.finance.yahoo.com/table.csv?s=%1$s&a=%5$d&b=%2$td&c=%2$tY&d=%6$d&e=%3$td&f=%3$tY&g=%4$s&ignore=.csv",
 						symbol, from, to, freq.symbol, monthFrom, monthTo);
 		CSVFile csv = readCSV(url, true);
-		Vector<Price> pxv = new Vector<Price>();
+		List<EquityPriceBean> pxs = new ArrayList<EquityPriceBean>();
 		for (String[] ss : csv.data) {
-			Price px = new Price();
-			PricePK pk = new PricePK();
-			pk.setSymbol(symbol);
-			pk.setDate(CommonUtils.getDate(ss[0], "yyyy-MM-dd"));
-			px.setTblPricePK(pk);
+			EquityPriceBean px = new EquityPriceBean();
+			px.setSymbol(symbol);
+			px.setDate(CommonUtils.getDate(ss[0], "yyyy-MM-dd"));
 			px.setPriceOpen(Double.parseDouble(ss[1]));
 			px.setPriceHigh(Double.parseDouble(ss[2]));
 			px.setPriceLow(Double.parseDouble(ss[3]));
 			px.setPriceClose(Double.parseDouble(ss[4]));
 			px.setVolumn(Long.parseLong(ss[5]));
 			px.setPriceCloseAdj(Double.parseDouble(ss[6]));
-			pxv.insertElementAt(px, 0);
+			pxs.add(0, px);
 		}
-		return pxv;
+		return pxs;
 	}
 
-	public static CSVFile readCSV(String url, boolean hasHeader) {
+	private static CSVFile readCSV(String url, boolean hasHeader) {
 		System.out.println(url);
 		CSVFile csv = new CSVFile();
 		try {
