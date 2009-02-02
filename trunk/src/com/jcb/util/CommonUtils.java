@@ -1,5 +1,6 @@
 package com.jcb.util;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -73,4 +74,44 @@ public class CommonUtils {
 		c.setTime(date);
 		return c.get(field);
 	}
+
+	public static int diffInDays(Date start, Date end) {
+		return (int) diff(start, end, Calendar.DATE);
+	}
+
+	public static double diff(Date start, Date end, int field) {
+		double d = end.getTime() - start.getTime();
+		switch (field) {
+		case Calendar.YEAR:
+			return d / (365 * 24 * 60 * 60 * 1000);
+		case Calendar.WEEK_OF_YEAR:
+			return d / (7 * 24 * 60 * 60 * 1000);
+		case Calendar.DATE:
+			return d / (24 * 60 * 60 * 1000);
+		case Calendar.HOUR:
+			return d / (60 * 60 * 1000);
+		case Calendar.MINUTE:
+			return d / (60 * 60 * 1000);
+		case Calendar.SECOND:
+			return d / (60 * 60 * 1000);
+		default:
+			return d;
+		}
+	}
+
+	public static Number parse(String s, NumberFormat fmt) {
+		try {
+			return fmt.parse(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void printArray(Object[] arr) {
+		for (Object obj : arr) {
+			System.out.println(obj);
+		}
+	}
+
 }
