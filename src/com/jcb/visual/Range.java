@@ -1,5 +1,9 @@
 package com.jcb.visual;
 
+import org.apache.commons.lang.time.DateUtils;
+
+import com.jcb.util.CommonUtils;
+
 public class Range {
 
 	public static class Double {
@@ -69,6 +73,48 @@ public class Range {
 		@Override
 		public String toString() {
 			return "Range[" + l + "," + h + "]";
+		}
+	}
+
+	public static class Date {
+
+		public java.util.Date l = new java.util.Date();
+		public java.util.Date h = new java.util.Date();
+
+		public int length() {
+			return CommonUtils.diffInDays(l, h);
+		}
+
+		public boolean contains(java.util.Date date) {
+			return !(date.before(l) || date.after(h));
+		}
+
+		public void move(int d) {
+			l = DateUtils.addDays(l, d);
+			h = DateUtils.addDays(h, d);
+		}
+
+		public void wide(double x) {
+			int change = (int) Math.ceil(length() * (x - 1) / 2);
+			l = DateUtils.addDays(l, -change);
+			h = DateUtils.addDays(h, change);
+		}
+
+		public void setRange(java.util.Date l, java.util.Date h) {
+			if (l != h) {
+				if (l.before(h)) {
+					this.l = l;
+					this.h = h;
+				} else {
+					this.l = h;
+					this.h = l;
+				}
+			}
+		}
+
+		@Override
+		public String toString() {
+			return "Range [" + l + "," + h + "]";
 		}
 	}
 }

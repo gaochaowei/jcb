@@ -45,14 +45,13 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, ActionListener {
 
 	private static final long serialVersionUID = -3464685432158185930L;
-	private List<EquityPriceBean> pxv = null;
+	private List<EquityPriceBean> pxs = null;
 	private double maxPrice = Double.MIN_VALUE;
 	private double minPrice = Double.MAX_VALUE;
 	private long maxVolumn = 0;
-	private Date[] dates = null;
 	// private int x = -1, y = -1;
-	private XYIndexedCord cord = null;
-	private XYIndexedCord cord2 = null;
+	private TimeSeriesCord cord = null;
+	private TimeSeriesCord cord2 = null;
 	private double[] avgSMA;
 	private double[] avgsEMA;
 	private double[] avgSMMA;
@@ -66,7 +65,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 	// private Date dateFrom = DateUtils.addDays(new Date(), -100);
 	// private Date dateTo = new Date();
 	private String symbol = null;
-	private int selected = -1;
+	private Date selected = null;
 	private JLabel lblSymbol = new JLabel("Symbol");
 	private JTextField txtSymbol = new JTextField(6);
 	private JToggleButton butLOG = new JToggleButton("LOG");
@@ -121,14 +120,14 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		if (symbol == null) {
 			return;
 		}
-		pxv = EquityReader.fetchEquityPrice(symbol, state.dateFrom,
+		pxs = EquityReader.fetchEquityPrice(symbol, state.dateFrom,
 				state.dateTo, freq);
 		maxPrice = Double.MIN_VALUE;
 		minPrice = Double.MAX_VALUE;
 		maxVolumn = 0;
 
 		Vector<Date> dv = new Vector<Date>();
-		for (EquityPriceBean px : pxv) {
+		for (EquityPriceBean px : pxs) {
 			if (px.getPriceHigh() > maxPrice) {
 				maxPrice = px.getPriceHigh();
 			}
@@ -140,24 +139,22 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			}
 			dv.add(px.getDate());
 		}
-		dates = new Date[pxv.size()];
-		cord = new XYIndexedCord(1, pxv.size(), minPrice, maxPrice, margin,
-				getWidth() - margin, toolBar.getHeight() + margin, getHeight()
-						- margin - 100);
-		cord.yaxis.measuer = Measure.LINEAR;
-		cord2 = new XYIndexedCord(1, pxv.size(), 0, maxVolumn, margin,
-				getWidth() - margin, getHeight() - 80 - margin, getHeight()
-						- margin);
 
-		dv.toArray(dates);
-		cord.xaxis.dates = dates;
-		cord2.xaxis.dates = dates;
-		avgSMA = GMath.computeSMA(pxv, 20);
-		avgsEMA = GMath.computeEMA(pxv, 20, 0.05);
-		avgSMMA = GMath.computeSMMA(pxv, 20);
-		avgsLWMA = GMath.computeLWMA(pxv, 20);
-		avgsVWMA = GMath.computeVWMA(pxv, 20);
-		avgsVMA = GMath.computeVolumeMA(pxv, 20);
+		cord = new TimeSeriesCord(dv.firstElement(), dv.lastElement(),
+				minPrice, maxPrice, margin, getWidth() - margin, toolBar
+						.getHeight()
+						+ margin, getHeight() - margin - 100);
+		cord.yaxis.measuer = Measure.LINEAR;
+		cord2 = new TimeSeriesCord(dv.firstElement(), dv.lastElement(), 0,
+				maxVolumn, margin, getWidth() - margin, getHeight() - 80
+						- margin, getHeight() - margin);
+
+		avgSMA = GMath.computeSMA(pxs, 20);
+		avgsEMA = GMath.computeEMA(pxs, 20, 0.05);
+		avgSMMA = GMath.computeSMMA(pxs, 20);
+		avgsLWMA = GMath.computeLWMA(pxs, 20);
+		avgsVWMA = GMath.computeVWMA(pxs, 20);
+		avgsVMA = GMath.computeVolumeMA(pxs, 20);
 	}
 
 	public MoneyPanel() {
@@ -213,10 +210,9 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		g.setColor(Color.GRAY);
 		cord.showXLine(g, state.x);
 		cord2.showXLine(g, state.x);
-		int selectedIndex = -1;
 		if (cord.xaxis.vr.contains(state.x)) {
-			selectedIndex = cord.xaxis.getValue(state.x) - 1;
-			EquityPriceBean px = pxv.get(selectedIndex);
+			Date selectedDate = cord.xaxis.getValue(state.x);
+			EquityPriceBean px = getPrice(pxs, selectedDate);
 			g.drawString(px.getSymbol(), cord.xaxis.vr.l, cord.yaxis.vr.l - 5);
 			g.drawString(String.format("Date:%1$td/%1$tm/%1$tY", px.getDate()),
 					cord.xaxis.vr.l + 50, cord.yaxis.vr.l - 5);
@@ -232,9 +228,9 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 					cord.yaxis.vr.l - 5);
 		}
 
-		for (int i = 0; i < pxv.size(); i++) {
-			EquityPriceBean px = pxv.get(i);
-			int x0 = cord.xaxis.getX(i + 1);
+		for (int i = 0; i < pxs.size(); i++) {
+			EquityPriceBean px = pxs.get(i);
+			int x0 = cord.xaxis.getX(px.getDate());
 			int yo = cord.yaxis.getPosition(px.getPriceOpen());
 			int yc = cord.yaxis.getPosition(px.getPriceClose());
 			int yl = cord.yaxis.getPosition(px.getPriceLow());
@@ -253,51 +249,46 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 							- cord2.yaxis.getPosition(px.getVolumn()));
 			// paintComponent average
 			if (i > 0) {
+				int x00 = cord.xaxis.getX(pxs.get(i - 1).getDate());
 				if (butSMA.isSelected()) {
 					g.setColor(Color.BLUE);
-					g.drawLine(cord.xaxis.getX(i), cord.yaxis
-							.getPosition(avgSMA[i - 1]), x0, cord.yaxis
-							.getPosition(avgSMA[i]));
+					g.drawLine(x00, cord.yaxis.getPosition(avgSMA[i - 1]), x0,
+							cord.yaxis.getPosition(avgSMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butEMA.isSelected()) {
 					g.setColor(Color.PINK);
-					g.drawLine(cord.xaxis.getX(i), cord.yaxis
-							.getPosition(avgsEMA[i - 1]), x0, cord.yaxis
-							.getPosition(avgsEMA[i]));
+					g.drawLine(x00, cord.yaxis.getPosition(avgsEMA[i - 1]), x0,
+							cord.yaxis.getPosition(avgsEMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butSMMA.isSelected()) {
 					g.setColor(Color.CYAN);
-					g.drawLine(cord.xaxis.getX(i), cord.yaxis
-							.getPosition(avgSMMA[i - 1]), x0, cord.yaxis
-							.getPosition(avgSMMA[i]));
+					g.drawLine(x00, cord.yaxis.getPosition(avgSMMA[i - 1]), x0,
+							cord.yaxis.getPosition(avgSMMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butLWMA.isSelected()) {
 					g.setColor(Color.ORANGE);
-					g.drawLine(cord.xaxis.getX(i), cord.yaxis
-							.getPosition(avgsLWMA[i - 1]), x0, cord.yaxis
-							.getPosition(avgsLWMA[i]));
+					g.drawLine(x00, cord.yaxis.getPosition(avgsLWMA[i - 1]),
+							x0, cord.yaxis.getPosition(avgsLWMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butVWMA.isSelected()) {
 					g.setColor(Color.MAGENTA);
-					g.drawLine(cord.xaxis.getX(i), cord.yaxis
-							.getPosition(avgsVWMA[i - 1]), x0, cord.yaxis
-							.getPosition(avgsVWMA[i]));
+					g.drawLine(x00, cord.yaxis.getPosition(avgsVWMA[i - 1]),
+							x0, cord.yaxis.getPosition(avgsVWMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butVMA.isSelected()) {
 					g.setColor(Color.yellow);
-					g.drawLine(cord2.xaxis.getX(i), cord2.yaxis
-							.getPosition(avgsVMA[i - 1]), x0, cord2.yaxis
-							.getPosition(avgsVMA[i]));
+					g.drawLine(x00, cord2.yaxis.getPosition(avgsVMA[i - 1]),
+							x0, cord2.yaxis.getPosition(avgsVMA[i]));
 					g.setColor(this.getForeground());
 				}
 
@@ -436,8 +427,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			this.y1 = e.getY();
 		} else {
 			if (cord.xaxis.vr.contains(e.getX())) {
-				int selectedIndex = cord.xaxis.getValue(e.getX()) - 1;
-				EquityPriceBean px = pxv.get(selectedIndex);
+				Date selectedDate = cord.xaxis.getValue(e.getX());
+				EquityPriceBean px = getPrice(pxs, selectedDate);
 				state.dateFrom = px.getDate();
 			}
 		}
@@ -449,8 +440,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			repaint();
 		} else {
 			if (cord.xaxis.vr.contains(e.getX())) {
-				int selectedIndex = cord.xaxis.getValue(e.getX()) - 1;
-				EquityPriceBean px = pxv.get(selectedIndex);
+				Date selectedDate = cord.xaxis.getValue(e.getX());
+				EquityPriceBean px = getPrice(pxs, selectedDate);
 				state.dateTo = px.getDate();
 				loadPrice();
 				repaint();
@@ -461,7 +452,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 	public void mouseMoved(MouseEvent e) {
 		state.x = e.getX();
 		state.y = e.getY();
-		if (symbol != null && selected != cord.xaxis.getValue(state.x)) {
+		if (symbol != null && !cord.xaxis.getValue(state.x).equals(selected)) {
 			selected = cord.xaxis.getValue(state.x);
 			repaint();
 		}
@@ -492,5 +483,13 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		public Date dateFrom = DateUtils.addDays(new Date(), -100);
 		public Date dateTo = new Date();
 		public int x, y, x1, y1;
+	}
+
+	public EquityPriceBean getPrice(List<EquityPriceBean> pxs, Date date) {
+		for (EquityPriceBean px : pxs) {
+			if (px.getDate().equals(date))
+				return px;
+		}
+		return null;
 	}
 }
