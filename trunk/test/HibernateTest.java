@@ -1,7 +1,7 @@
 import java.util.List;
 
-import com.jcb.persistence.dao.EquityDao;
-import com.jcb.persistence.po.Equity;
+import com.jcb.bean.EquityBean;
+import com.jcb.dao.EquityDao;
 import com.jcb.util.Msg;
 
 public class HibernateTest {
@@ -12,11 +12,11 @@ public class HibernateTest {
 	public static void main(String[] args) {
 
 		System.out.println("load equity ...");
-		Equity equity = EquityDao.getEquity(1);
+		EquityBean equity = EquityDao.getEquity(1);
 		System.out.println(equity);
 
 		System.out.println("save equity ...");
-		equity = new Equity();
+		equity = new EquityBean();
 		equity.setId(1);
 		equity.setSymbol("C6L.SI");
 		equity.setName("Singapore Airlines Limited");
@@ -41,7 +41,7 @@ public class HibernateTest {
 		equity = EquityDao.getEquity(1);
 		System.out.println(equity);
 
-		List<Equity> all = EquityDao.getAll();
+		List<EquityBean> all = EquityDao.getAll();
 		System.out.println(all);
 		System.out.println("${test}=" + Msg.get("test"));
 
