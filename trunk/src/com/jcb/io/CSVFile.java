@@ -1,4 +1,4 @@
-package com.jcb.persistence.io;
+package com.jcb.io;
 
 public class CSVFile {
 

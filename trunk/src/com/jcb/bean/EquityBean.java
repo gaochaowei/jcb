@@ -1,6 +1,6 @@
-package com.jcb.persistence.po;
+package com.jcb.bean;
 
-public class Equity {
+public class EquityBean {
 	private int id;
 	private String symbol;
 	private String name;
