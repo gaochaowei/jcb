@@ -34,4 +34,8 @@ public class CommonUtils {
 		} catch (Exception e) {
 		}
 	}
+	
+	public static java.sql.Date sqlDate(java.util.Date utilDate) {
+		return new java.sql.Date(utilDate.getTime());
+	}
 }

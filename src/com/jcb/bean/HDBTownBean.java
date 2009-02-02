@@ -1,4 +1,5 @@
-public class TownBean {
+package com.jcb.bean;
+public class HDBTownBean {
 	private int id;
 	private String name;
 

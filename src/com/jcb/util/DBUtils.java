@@ -19,6 +19,11 @@ public class DBUtils {
 		return conn;
 	}
 
+	public static void close(Connection conn, Statement stmt) {
+		close(stmt);
+		close(conn);
+	}
+	
 	public static void close(Connection conn, Statement stmt, ResultSet rs) {
 		close(rs);
 		close(stmt);
