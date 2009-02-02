@@ -6,19 +6,19 @@ import com.jcb.bean.EquityBean;
 
 public class EquityDAO {
 
-	public static List<EquityBean> getAll() {
+	public static List<EquityBean> selectEquity() {
 		return null;
 	}
 
-	public static EquityBean getEquity(final int id) {
+	public static EquityBean selectEquity(int id) {
 		return null;
 	}
 
-	public static void saveOrUpdate(final EquityBean equity) {
+	public static void save(EquityBean equity) {
 
 	}
 
-	public static void deleteEquity(final EquityBean equity) {
+	public static void delete(EquityBean equity) {
 
 	}
 
