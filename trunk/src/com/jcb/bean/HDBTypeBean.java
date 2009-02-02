@@ -1,4 +1,5 @@
-public class HdbTypeBean {
+package com.jcb.bean;
+public class HDBTypeBean {
 	private String ref;
 	private String name;
 

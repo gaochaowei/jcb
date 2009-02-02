@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jcb.bean.EquityBean;
 
-public class EquityDao {
+public class EquityDAO {
 
 	public static List<EquityBean> getAll() {
 		return null;

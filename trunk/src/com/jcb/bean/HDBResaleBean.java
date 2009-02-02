@@ -1,6 +1,7 @@
+package com.jcb.bean;
 import java.util.Date;
 
-public class ResaleBean {
+public class HDBResaleBean {
 
 	private String town;
 	private String street;

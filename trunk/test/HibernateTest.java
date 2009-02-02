@@ -1,7 +1,7 @@
 import java.util.List;
 
 import com.jcb.bean.EquityBean;
-import com.jcb.dao.EquityDao;
+import com.jcb.dao.EquityDAO;
 import com.jcb.util.Msg;
 
 public class HibernateTest {
@@ -12,7 +12,7 @@ public class HibernateTest {
 	public static void main(String[] args) {
 
 		System.out.println("load equity ...");
-		EquityBean equity = EquityDao.getEquity(1);
+		EquityBean equity = EquityDAO.getEquity(1);
 		System.out.println(equity);
 
 		System.out.println("save equity ...");
@@ -20,28 +20,28 @@ public class HibernateTest {
 		equity.setId(1);
 		equity.setSymbol("C6L.SI");
 		equity.setName("Singapore Airlines Limited");
-		EquityDao.saveOrUpdate(equity);
+		EquityDAO.saveOrUpdate(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDao.getEquity(1);
+		equity = EquityDAO.getEquity(1);
 		System.out.println(equity);
 
 		System.out.println("update equity ...");
 		equity.setName("SIA");
-		EquityDao.saveOrUpdate(equity);
+		EquityDAO.saveOrUpdate(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDao.getEquity(1);
+		equity = EquityDAO.getEquity(1);
 		System.out.println(equity);
 
 		System.out.println("delete equity ...");
-		EquityDao.deleteEquity(equity);
+		EquityDAO.deleteEquity(equity);
 
 		System.out.println("load equity ...");
-		equity = EquityDao.getEquity(1);
+		equity = EquityDAO.getEquity(1);
 		System.out.println(equity);
 
-		List<EquityBean> all = EquityDao.getAll();
+		List<EquityBean> all = EquityDAO.getAll();
 		System.out.println(all);
 		System.out.println("${test}=" + Msg.get("test"));
 
