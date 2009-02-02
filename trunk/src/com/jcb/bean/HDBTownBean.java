@@ -1,5 +1,8 @@
 package com.jcb.bean;
-public class HDBTownBean {
+
+public class HDBTownBean extends BaseBean {
+
+	private static final long serialVersionUID = 4034183236655350604L;
 	private int id;
 	private String name;
 

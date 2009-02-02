@@ -21,15 +21,15 @@ import com.jcb.dao.HDBTypeDAO;
 
 public class HDBResaleReader {
 
-	public static List<HDBResaleBean> retrieveResales(int months) {
+	public static List<HDBResaleBean> fetchResales(int months) {
 		List<HDBResaleBean> beans = new ArrayList<HDBResaleBean>();
 		try {
 			List<HDBTownBean> towns = HDBTownDAO.getHDBTowns();
 			List<HDBTypeBean> hdbTypes = HDBTypeDAO.getHDBTypes();
 			for (HDBTownBean town : towns) {
 				for (HDBTypeBean hdbType : hdbTypes) {
-					beans.addAll(retrieveResales(town.getName(), hdbType
-							.getRef(), months, 1));
+					beans.addAll(fetchResales(town.getName(), hdbType.getRef(),
+							months, 1));
 				}
 			}
 		} catch (Exception e) {
@@ -38,7 +38,7 @@ public class HDBResaleReader {
 		return beans;
 	}
 
-	private static List<HDBResaleBean> retrieveResales(String town,
+	private static List<HDBResaleBean> fetchResales(String town,
 			String flatType, int startDate, int endDate) {
 		List<HDBResaleBean> resales = new ArrayList<HDBResaleBean>();
 		HttpClient client = new HttpClient();

@@ -31,9 +31,9 @@ import javax.swing.JToolBar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
-import com.jcb.io.YahooQuote;
-import com.jcb.io.YahooQuote.Frequency;
-import com.jcb.market.data.object.Price;
+import com.jcb.bean.EquityPriceBean;
+import com.jcb.io.EquityReader;
+import com.jcb.io.EquityReader.Frequency;
 import com.jcb.math.GMath;
 import com.jcb.visual.Axis.Measure;
 
@@ -44,7 +44,8 @@ import com.jcb.visual.Axis.Measure;
 public class MoneyPanel extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, ActionListener {
 
-	private Vector<Price> pxv = null;
+	private static final long serialVersionUID = -3464685432158185930L;
+	private List<EquityPriceBean> pxv = null;
 	private double maxPrice = Double.MIN_VALUE;
 	private double minPrice = Double.MAX_VALUE;
 	private long maxVolumn = 0;
@@ -120,13 +121,14 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		if (symbol == null) {
 			return;
 		}
-		pxv = YahooQuote.readPrice(symbol, state.dateFrom, state.dateTo, freq);
+		pxv = EquityReader.fetchEquityPrice(symbol, state.dateFrom,
+				state.dateTo, freq);
 		maxPrice = Double.MIN_VALUE;
 		minPrice = Double.MAX_VALUE;
 		maxVolumn = 0;
 
 		Vector<Date> dv = new Vector<Date>();
-		for (Price px : pxv) {
+		for (EquityPriceBean px : pxv) {
 			if (px.getPriceHigh() > maxPrice) {
 				maxPrice = px.getPriceHigh();
 			}
@@ -136,7 +138,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			if (px.getVolumn() > maxVolumn) {
 				maxVolumn = px.getVolumn();
 			}
-			dv.add(px.getTblPricePK().getDate());
+			dv.add(px.getDate());
 		}
 		dates = new Date[pxv.size()];
 		cord = new XYIndexedCord(1, pxv.size(), minPrice, maxPrice, margin,
@@ -214,12 +216,10 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		int selectedIndex = -1;
 		if (cord.xaxis.vr.contains(state.x)) {
 			selectedIndex = cord.xaxis.getValue(state.x) - 1;
-			Price px = pxv.get(selectedIndex);
-			g.drawString(px.getTblPricePK().getSymbol(), cord.xaxis.vr.l,
-					cord.yaxis.vr.l - 5);
-			g.drawString(String.format("Date:%1$td/%1$tm/%1$tY", px
-					.getTblPricePK().getDate()), cord.xaxis.vr.l + 50,
-					cord.yaxis.vr.l - 5);
+			EquityPriceBean px = pxv.get(selectedIndex);
+			g.drawString(px.getSymbol(), cord.xaxis.vr.l, cord.yaxis.vr.l - 5);
+			g.drawString(String.format("Date:%1$td/%1$tm/%1$tY", px.getDate()),
+					cord.xaxis.vr.l + 50, cord.yaxis.vr.l - 5);
 			g.drawString("Open:" + px.getPriceOpen(), cord.xaxis.vr.l + 160,
 					cord.yaxis.vr.l - 5);
 			g.drawString("Low:" + px.getPriceLow(), cord.xaxis.vr.l + 240,
@@ -233,7 +233,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		}
 
 		for (int i = 0; i < pxv.size(); i++) {
-			Price px = pxv.get(i);
+			EquityPriceBean px = pxv.get(i);
 			int x0 = cord.xaxis.getX(i + 1);
 			int yo = cord.yaxis.getPosition(px.getPriceOpen());
 			int yc = cord.yaxis.getPosition(px.getPriceClose());
@@ -437,8 +437,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		} else {
 			if (cord.xaxis.vr.contains(e.getX())) {
 				int selectedIndex = cord.xaxis.getValue(e.getX()) - 1;
-				Price px = pxv.get(selectedIndex);
-				state.dateFrom = px.getTblPricePK().getDate();
+				EquityPriceBean px = pxv.get(selectedIndex);
+				state.dateFrom = px.getDate();
 			}
 		}
 	}
@@ -450,8 +450,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		} else {
 			if (cord.xaxis.vr.contains(e.getX())) {
 				int selectedIndex = cord.xaxis.getValue(e.getX()) - 1;
-				Price px = pxv.get(selectedIndex);
-				state.dateTo = px.getTblPricePK().getDate();
+				EquityPriceBean px = pxv.get(selectedIndex);
+				state.dateTo = px.getDate();
 				loadPrice();
 				repaint();
 			}

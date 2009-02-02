@@ -16,7 +16,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import com.jcb.util.GuiUtils;
 import com.jcb.util.ImageUtils;
-import com.jcb.util.SystemConfig;
 
 /**
  * @author gcw
@@ -24,11 +23,10 @@ import com.jcb.util.SystemConfig;
  */
 public class AppFrame extends JFrame implements ActionListener {
 
-	public static final long serialVersionUID = 1;
+	public static final long serialVersionUID = 1L;
 
 	public AppFrame() {
 		super();
-		setTitle(SystemConfig.appTitle);
 		setIconImage(ImageUtils.readImage("money.gif"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenuBar();

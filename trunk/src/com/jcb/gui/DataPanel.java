@@ -6,7 +6,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.jcb.bean.EquityBean;
-import com.jcb.io.YahooQuote;
+import com.jcb.io.EquityReader;
 
 public class DataPanel extends JScrollPane {
 
@@ -28,9 +28,9 @@ public class DataPanel extends JScrollPane {
 	 */
 	private void initialize() {
 		this.setSize(300, 200);
-		List<EquityBean> data = YahooQuote.retrieveEquityList("^STI");
-		jTable = new JTable(new BeanTableModel(data,EquityBean.class));
-		//jTable.setFillsViewportHeight(true);
+		List<EquityBean> data = EquityReader.fetchEquityList("^STI");
+		jTable = new JTable(new BeanTableModel(data, EquityBean.class));
+		// jTable.setFillsViewportHeight(true);
 		this.setViewportView(jTable);
 	}
 

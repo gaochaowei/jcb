@@ -30,13 +30,14 @@ import com.jcb.util.CommonUtils;
 public class FunctionPanel extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, MouseWheelListener {
 
+	private static final long serialVersionUID = -3413261450239176866L;
 	private XYCord cord = new XYCord();
 	private int margin = 50;
 	private List<Expression> exps = new ArrayList<Expression>();
 	private Expression expReg;
 	private double[][] randoms = null;
 	private int x;
-	private int y;
+	// private int y;
 	private int x1;
 	private int y1;
 	private int x2;
@@ -402,7 +403,7 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		}
 
 		public void run() {
-			Thread me = Thread.currentThread();
+			// Thread me = Thread.currentThread();
 			if (mode == Mode.ZOOM_IN) {
 				process("zoomIn", 1000, 10000);
 			} else if (mode == Mode.ZOOM_OUT) {

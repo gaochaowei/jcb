@@ -17,7 +17,7 @@ public class BeanTableModel extends AbstractTableModel {
 	private Map<String, String> p = new HashMap<String, String>();
 	private List<?> data;
 
-	public BeanTableModel(List<?>data, Class<?> dataType) {
+	public BeanTableModel(List<?> data, Class<?> dataType) {
 		this.data = data;
 		PropertyDescriptor[] pds = PropertyUtils
 				.getPropertyDescriptors(dataType);

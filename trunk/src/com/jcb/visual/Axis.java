@@ -50,13 +50,11 @@ public class Axis {
 		default:
 			switch (align) {
 			case HORIZONTAL:
-				double s = Math.log(dr.h / dr.l);
 				double t = 1d * vr.length() / (position - vr.l);
 				double v = Math.exp((Math.log(dr.h) - (t + 1) * Math.log(dr.l))
 						/ t);
 				return v;
 			default:
-				s = Math.log(dr.h / dr.l);
 				t = 1d * vr.length() / (position - vr.l);
 				v = Math.exp((Math.log(dr.h) - (t + 1) * Math.log(dr.l)) / t);
 				return v;

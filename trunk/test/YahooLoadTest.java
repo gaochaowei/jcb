@@ -5,7 +5,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 
 import com.jcb.bean.EquityBean;
-import com.jcb.io.YahooQuote;
+import com.jcb.io.EquityReader;
 import com.jcb.util.SystemConfig;
 
 public class YahooLoadTest {

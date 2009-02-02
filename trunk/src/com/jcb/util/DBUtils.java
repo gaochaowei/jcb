@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DBUtils {
-	
+
 	public static Connection getConnection() throws Exception {
 		Connection conn = null;
 		try {
@@ -23,7 +23,7 @@ public class DBUtils {
 		close(stmt);
 		close(conn);
 	}
-	
+
 	public static void close(Connection conn, Statement stmt, ResultSet rs) {
 		close(rs);
 		close(stmt);

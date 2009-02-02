@@ -18,6 +18,7 @@ import com.jcb.visual.FunctionPanel.Mode;
 public class GXYPanel extends JPanel implements ComponentListener,
 		ActionListener {
 
+	private static final long serialVersionUID = 8583690297982299577L;
 	private JLabel lblExpression = new JLabel("Expression");
 	private JTextField txtExpression = new JTextField(20);
 	private JButton butClear = new JButton("Clear");
