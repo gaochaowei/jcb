@@ -17,7 +17,7 @@ public class Test {
 		System.out.println(AxisUtils.getUnit(1203.5));
 		String[] cals = AxisUtils.getCalibration(100, 2788);
 		CommonUtils.printArray(cals);
-		List<EquityPriceBean> pxs = EquityReader.fetchEquityPrice("B6L.SI",
+		List<EquityPriceBean> pxs = EquityReader.fetchEquityPrice("c6L.SI",
 				DateUtils.addDays(new Date(), -20), new Date(), Frequency.DATE);
 		System.out.println(pxs);
 	}
