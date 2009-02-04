@@ -24,7 +24,7 @@ public class EquityPriceDAO {
 							+ "' and price_date>DATE('2007-08-26') order by PRICE_DATE");
 			while (rs.next()) {
 				EquityPriceBean px = new EquityPriceBean();
-				px.setSymbol(symbol);
+				px.getEquity().setName(symbol);
 				px.setDate(rs.getDate("PRICE_DATE"));
 				px.setPriceClose(rs.getDouble("PRICE_CLOSE"));
 				px.setPriceOpen(rs.getDouble("PRICE_OPEN"));

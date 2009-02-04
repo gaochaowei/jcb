@@ -96,11 +96,8 @@ public class HDBResaleReader {
 									.substring(1);
 							price = price.substring(0, price.indexOf('.'));
 							String approvalDate = getValue(br.readLine());
-							// System.out.println(blk+" | "+street+
-							// " | "+story+" | "+floorArea+" | "+
-							// commenceDate+" | "+price+" | "+approvalDate);
-							bean.setTown(town);
-							bean.setType(flatType);
+							bean.getTown().setName(town);
+							bean.getType().setRef(flatType);
 							bean.setBlk(blk);
 							bean.setStreet(street);
 							bean.setStory(story);
