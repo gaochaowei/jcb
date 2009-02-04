@@ -54,7 +54,7 @@ public class EquityReader {
 		List<EquityPriceBean> pxs = new ArrayList<EquityPriceBean>();
 		for (String[] ss : csv.data) {
 			EquityPriceBean px = new EquityPriceBean();
-			px.setSymbol(symbol);
+			px.getEquity().setSymbol(symbol);
 			px.setDate(CommonUtils.getDate(ss[0], "yyyy-MM-dd"));
 			px.setPriceOpen(Double.parseDouble(ss[1]));
 			px.setPriceHigh(Double.parseDouble(ss[2]));

@@ -25,7 +25,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import com.jcb.util.ImageUtils;
 import com.jcb.visual.GXYPanel;
-import com.jcb.visual.MoneyPanel;
+import com.jcb.visual.PriceChartPanelOld;
 
 public class Money extends JFrame implements ActionListener {
 
@@ -36,7 +36,7 @@ public class Money extends JFrame implements ActionListener {
 		setIconImage(ImageUtils.readImage("money.gif"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenuBar();
-		MoneyPanel chartPanel = new MoneyPanel();
+		PriceChartPanelOld chartPanel = new PriceChartPanelOld();
 		GXYPanel xyPanel = new GXYPanel();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		// tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
