@@ -5,7 +5,7 @@ import java.util.Date;
 public class EquityPriceBean extends BaseBean {
 
 	private static final long serialVersionUID = -1532458335496961189L;
-	private String symbol;
+	private EquityBean equity = new EquityBean();
 	private Date date;
 	private double priceClose;
 	private double priceOpen;
@@ -14,12 +14,12 @@ public class EquityPriceBean extends BaseBean {
 	private double priceCloseAdj;
 	private long volumn;
 
-	public String getSymbol() {
-		return symbol;
+	public EquityBean getEquity() {
+		return equity;
 	}
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
+	public void setEquity(EquityBean equity) {
+		this.equity = equity;
 	}
 
 	public Date getDate() {
