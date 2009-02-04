@@ -35,7 +35,7 @@ import com.jcb.bean.EquityPriceBean;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.math.GMath;
-import com.jcb.visual.Axis.Measure;
+import com.jcb.visual.ValueAxis.Scale;
 
 /**
  * 
@@ -140,14 +140,22 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			dv.add(px.getDate());
 		}
 
-		cord = new TimeSeriesCord(dv.firstElement(), dv.lastElement(),
-				minPrice, maxPrice, margin, getWidth() - margin, toolBar
-						.getHeight()
-						+ margin, getHeight() - margin - 100);
-		cord.yaxis.measuer = Measure.LINEAR;
-		cord2 = new TimeSeriesCord(dv.firstElement(), dv.lastElement(), 0,
-				maxVolumn, margin, getWidth() - margin, getHeight() - 80
-						- margin, getHeight() - margin);
+		cord = new TimeSeriesCord();
+		cord.getTimeAxis().setValueLow(dv.firstElement());
+		cord.getTimeAxis().setValueHigh(dv.lastElement());
+		cord.getTimeAxis().setScreenLow(margin);
+		cord.getTimeAxis().setScreenHigh(getWidth() - margin);
+		cord.getYAxis().setValueLow(minPrice);
+		cord.getYAxis().setValueHigh(maxPrice);
+		cord.getYAxis().setScreenLow(toolBar.getHeight() + margin);
+		cord.getYAxis().setScreenHigh(getHeight() - margin - 100);
+
+		cord2 = new TimeSeriesCord();
+		cord2.setTimeAxis(cord.getTimeAxis());
+		cord2.getYAxis().setValueLow(0d);
+		cord2.getYAxis().setValueHigh(maxVolumn + 0d);
+		cord2.getYAxis().setScreenLow(getHeight() - 80 - margin);
+		cord2.getYAxis().setScreenHigh(getHeight() - margin);
 
 		avgSMA = GMath.computeSMA(pxs, 20);
 		avgsEMA = GMath.computeEMA(pxs, 20, 0.05);
@@ -197,9 +205,9 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			return;
 		}
 		if (butLOG.isSelected()) {
-			cord.yaxis.measuer = Measure.LOG;
+			cord.getYAxis().setScale(Scale.LOG);
 		} else {
-			cord.yaxis.measuer = Measure.LINEAR;
+			cord.getYAxis().setScale(Scale.LINEAR);
 		}
 
 		cord.showBack(g);
@@ -210,31 +218,33 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		g.setColor(Color.GRAY);
 		cord.showXLine(g, state.x);
 		cord2.showXLine(g, state.x);
-		if (cord.xaxis.vr.contains(state.x)) {
-			Date selectedDate = cord.xaxis.getValue(state.x);
+		if (cord.getTimeAxis().containScreen(state.x)) {
+			Date selectedDate = cord.getTimeAxis().getValue(state.x);
 			EquityPriceBean px = getPrice(pxs, selectedDate);
-			g.drawString(px.getSymbol(), cord.xaxis.vr.l, cord.yaxis.vr.l - 5);
+			g.drawString(px.getSymbol(), cord.getTimeAxis().getScreenLow(),
+					cord.getYAxis().getScreenLow() - 5);
 			g.drawString(String.format("Date:%1$td/%1$tm/%1$tY", px.getDate()),
-					cord.xaxis.vr.l + 50, cord.yaxis.vr.l - 5);
-			g.drawString("Open:" + px.getPriceOpen(), cord.xaxis.vr.l + 160,
-					cord.yaxis.vr.l - 5);
-			g.drawString("Low:" + px.getPriceLow(), cord.xaxis.vr.l + 240,
-					cord.yaxis.vr.l - 5);
-			g.drawString("High:" + px.getPriceHigh(), cord.xaxis.vr.l + 320,
-					cord.yaxis.vr.l - 5);
-			g.drawString("Close:" + px.getPriceClose(), cord.xaxis.vr.l + 400,
-					cord.yaxis.vr.l - 5);
-			g.drawString("Volume:" + px.getVolumn(), cord.xaxis.vr.l + 480,
-					cord.yaxis.vr.l - 5);
+					cord.getTimeAxis().getScreenLow() + 50, cord.getYAxis()
+							.getScreenLow() - 5);
+			g.drawString("Open:" + px.getPriceOpen(), cord.getTimeAxis()
+					.getScreenLow() + 160, cord.getYAxis().getScreenLow() - 5);
+			g.drawString("Low:" + px.getPriceLow(), cord.getTimeAxis()
+					.getScreenLow() + 240, cord.getYAxis().getScreenLow() - 5);
+			g.drawString("High:" + px.getPriceHigh(), cord.getTimeAxis()
+					.getScreenLow() + 320, cord.getYAxis().getScreenLow() - 5);
+			g.drawString("Close:" + px.getPriceClose(), cord.getTimeAxis()
+					.getScreenLow() + 400, cord.getYAxis().getScreenLow() - 5);
+			g.drawString("Volume:" + px.getVolumn(), cord.getTimeAxis()
+					.getScreenLow() + 480, cord.getYAxis().getScreenLow() - 5);
 		}
 
 		for (int i = 0; i < pxs.size(); i++) {
 			EquityPriceBean px = pxs.get(i);
-			int x0 = cord.xaxis.getX(px.getDate());
-			int yo = cord.yaxis.getPosition(px.getPriceOpen());
-			int yc = cord.yaxis.getPosition(px.getPriceClose());
-			int yl = cord.yaxis.getPosition(px.getPriceLow());
-			int yh = cord.yaxis.getPosition(px.getPriceHigh());
+			int x0 = cord.getTimeAxis().getScreen(px.getDate());
+			int yo = cord.getYAxis().getScreen(px.getPriceOpen());
+			int yc = cord.getYAxis().getScreen(px.getPriceClose());
+			int yl = cord.getYAxis().getScreen(px.getPriceLow());
+			int yh = cord.getYAxis().getScreen(px.getPriceHigh());
 			// paintComponent K line
 			if (px.getPriceClose() > px.getPriceOpen()) {
 				g.setColor(Color.GREEN);
@@ -244,51 +254,52 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			g.fillRect(x0 - 1, Math.min(yo, yc), 3, Math.abs(yo - yc) + 1);
 			g.drawLine(x0, yl, x0, yh);
 			// paintComponent volum
-			g.fillRect(x0 - 2, cord2.yaxis.getPosition(px.getVolumn()), 5,
-					cord2.yaxis.getPosition(0)
-							- cord2.yaxis.getPosition(px.getVolumn()));
+			g.fillRect(x0 - 2, cord2.getYAxis().getScreen(px.getVolumn() + 0d),
+					5, cord2.getYAxis().getScreen(0d)
+							- cord2.getYAxis().getScreen(px.getVolumn() + 0d));
 			// paintComponent average
 			if (i > 0) {
-				int x00 = cord.xaxis.getX(pxs.get(i - 1).getDate());
+				int x00 = cord.getTimeAxis()
+						.getScreen(pxs.get(i - 1).getDate());
 				if (butSMA.isSelected()) {
 					g.setColor(Color.BLUE);
-					g.drawLine(x00, cord.yaxis.getPosition(avgSMA[i - 1]), x0,
-							cord.yaxis.getPosition(avgSMA[i]));
+					g.drawLine(x00, cord.getYAxis().getScreen(avgSMA[i - 1]),
+							x0, cord.getYAxis().getScreen(avgSMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butEMA.isSelected()) {
 					g.setColor(Color.PINK);
-					g.drawLine(x00, cord.yaxis.getPosition(avgsEMA[i - 1]), x0,
-							cord.yaxis.getPosition(avgsEMA[i]));
+					g.drawLine(x00, cord.getYAxis().getScreen(avgsEMA[i - 1]),
+							x0, cord.getYAxis().getScreen(avgsEMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butSMMA.isSelected()) {
 					g.setColor(Color.CYAN);
-					g.drawLine(x00, cord.yaxis.getPosition(avgSMMA[i - 1]), x0,
-							cord.yaxis.getPosition(avgSMMA[i]));
+					g.drawLine(x00, cord.getYAxis().getScreen(avgSMMA[i - 1]),
+							x0, cord.getYAxis().getScreen(avgSMMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butLWMA.isSelected()) {
 					g.setColor(Color.ORANGE);
-					g.drawLine(x00, cord.yaxis.getPosition(avgsLWMA[i - 1]),
-							x0, cord.yaxis.getPosition(avgsLWMA[i]));
+					g.drawLine(x00, cord.getYAxis().getScreen(avgsLWMA[i - 1]),
+							x0, cord.getYAxis().getScreen(avgsLWMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butVWMA.isSelected()) {
 					g.setColor(Color.MAGENTA);
-					g.drawLine(x00, cord.yaxis.getPosition(avgsVWMA[i - 1]),
-							x0, cord.yaxis.getPosition(avgsVWMA[i]));
+					g.drawLine(x00, cord.getYAxis().getScreen(avgsVWMA[i - 1]),
+							x0, cord.getYAxis().getScreen(avgsVWMA[i]));
 					g.setColor(this.getForeground());
 				}
 
 				if (butVMA.isSelected()) {
 					g.setColor(Color.yellow);
-					g.drawLine(x00, cord2.yaxis.getPosition(avgsVMA[i - 1]),
-							x0, cord2.yaxis.getPosition(avgsVMA[i]));
+					g.drawLine(x00, cord2.getYAxis().getScreen(avgsVMA[i - 1]),
+							x0, cord2.getYAxis().getScreen(avgsVMA[i]));
 					g.setColor(this.getForeground());
 				}
 
@@ -398,11 +409,11 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 
 	public void componentResized(ComponentEvent e) {
 		if (symbol != null) {
-			cord.xaxis.vr.h = this.getWidth() - margin;
-			cord2.xaxis.vr.h = this.getWidth() - margin;
-			cord.yaxis.vr.h = getHeight() - margin - 100;
-			cord2.yaxis.vr.l = getHeight() - 80 - margin;
-			cord2.yaxis.vr.h = getHeight() - margin;
+			cord.getTimeAxis().setScreenHigh(this.getWidth() - margin);
+			cord2.getTimeAxis().setScreenHigh(this.getWidth() - margin);
+			cord.getYAxis().setScreenHigh(getHeight() - margin - 100);
+			cord2.getYAxis().setScreenLow(getHeight() - 80 - margin);
+			cord2.getYAxis().setScreenHigh(getHeight() - margin);
 			repaint();
 		}
 	}
@@ -426,8 +437,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			this.x1 = e.getX();
 			this.y1 = e.getY();
 		} else {
-			if (cord.xaxis.vr.contains(e.getX())) {
-				Date selectedDate = cord.xaxis.getValue(e.getX());
+			if (cord.getTimeAxis().containScreen(e.getX())) {
+				Date selectedDate = cord.getTimeAxis().getValue(e.getX());
 				EquityPriceBean px = getPrice(pxs, selectedDate);
 				state.dateFrom = px.getDate();
 			}
@@ -439,8 +450,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			lines.add(new Line2D.Float(x1, y1, e.getX(), e.getY()));
 			repaint();
 		} else {
-			if (cord.xaxis.vr.contains(e.getX())) {
-				Date selectedDate = cord.xaxis.getValue(e.getX());
+			if (cord.getTimeAxis().containScreen(e.getX())) {
+				Date selectedDate = cord.getTimeAxis().getValue(e.getX());
 				EquityPriceBean px = getPrice(pxs, selectedDate);
 				state.dateTo = px.getDate();
 				loadPrice();
@@ -452,8 +463,9 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 	public void mouseMoved(MouseEvent e) {
 		state.x = e.getX();
 		state.y = e.getY();
-		if (symbol != null && !cord.xaxis.getValue(state.x).equals(selected)) {
-			selected = cord.xaxis.getValue(state.x);
+		if (symbol != null
+				&& !cord.getTimeAxis().getValue(state.x).equals(selected)) {
+			selected = cord.getTimeAxis().getValue(state.x);
 			repaint();
 		}
 	}
