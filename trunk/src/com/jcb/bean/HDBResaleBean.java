@@ -5,9 +5,10 @@ import java.util.Date;
 public class HDBResaleBean extends BaseBean {
 
 	private static final long serialVersionUID = -3104018004895130390L;
-	private String town;
+
+	private HDBTownBean town = new HDBTownBean();
+	private HDBTypeBean type = new HDBTypeBean();
 	private String street;
-	private String type;
 	private String blk;
 	private String story;
 	private float floorArea;
@@ -15,11 +16,11 @@ public class HDBResaleBean extends BaseBean {
 	private int resalePrice;
 	private Date resaleApprovalDate;
 
-	public String getTown() {
+	public HDBTownBean getTown() {
 		return town;
 	}
 
-	public void setTown(String town) {
+	public void setTown(HDBTownBean town) {
 		this.town = town;
 	}
 
@@ -31,11 +32,11 @@ public class HDBResaleBean extends BaseBean {
 		this.street = street;
 	}
 
-	public String getType() {
+	public HDBTypeBean getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(HDBTypeBean type) {
 		this.type = type;
 	}
 
