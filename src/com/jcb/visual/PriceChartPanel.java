@@ -1,0 +1,134 @@
+package com.jcb.visual;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JPanel;
+
+import org.apache.commons.lang.time.DateUtils;
+
+import com.jcb.bean.EquityPriceBean;
+import com.jcb.io.EquityReader;
+import com.jcb.io.EquityReader.Frequency;
+import com.jcb.util.CommonUtils;
+import com.jcb.visual.ValueAxis.Scale;
+
+public class PriceChartPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	private TimeSeriesCoordinate2D priceCoord; // @jve:decl-index=0:
+	private TimeSeriesCoordinate2D volumnCoord; // @jve:decl-index=0:
+	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
+	private List<EquityPriceBean> priceList;
+
+	/**
+	 * This is the default constructor
+	 */
+	public PriceChartPanel() {
+		super();
+		initialize();
+	}
+
+	/**
+	 * This method initializes this
+	 * 
+	 * @return void
+	 */
+	private void initialize() {
+		this.setSize(600, 300);
+		this.setLayout(new BorderLayout());
+		priceCoord = new TimeSeriesCoordinate2D();
+		volumnCoord = new TimeSeriesCoordinate2D();
+		volumnCoord.setTimeAxis(priceCoord.getTimeAxis());
+		priceCoord.getYAxis().setScale(Scale.LOG);
+		fitScreen();
+		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
+				"BS6.SI", DateUtils.addDays(new Date(), -300), new Date(),
+				Frequency.WEEK);
+		setPriceList(priceList);
+		this.addComponentListener(new java.awt.event.ComponentAdapter() {
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				fitScreen();
+				repaint();
+			}
+		});
+	}
+
+	public void setPriceList(List<EquityPriceBean> priceList) {
+		this.priceList = priceList;
+		priceMap = new HashMap<Date, EquityPriceBean>();
+		double priceLow = Double.MAX_VALUE;
+		double priceHigh = Double.MIN_VALUE;
+		double volumnHigh = 0;
+		Date dateLow = new Date(Long.MAX_VALUE);
+		Date dateHigh = new Date(Long.MIN_VALUE);
+		for (EquityPriceBean price : priceList) {
+			priceMap.put(price.getDate(), price);
+			dateLow = CommonUtils.min(dateLow, price.getDate());
+			dateHigh = CommonUtils.max(dateLow, price.getDate());
+			priceLow = Math.min(priceLow, price.getPriceLow());
+			priceHigh = Math.max(priceHigh, price.getPriceHigh());
+			volumnHigh = Math.max(volumnHigh, price.getVolumn());
+
+		}
+		priceCoord.getTimeAxis().setValueLow(dateLow);
+		priceCoord.getTimeAxis().setValueHigh(dateHigh);
+		priceCoord.getYAxis().setValueLow(priceLow);
+		priceCoord.getYAxis().setValueHigh(priceHigh);
+		volumnCoord.getYAxis().setValueLow(0d);
+		volumnCoord.getYAxis().setValueHigh(volumnHigh);
+		System.out.println(priceCoord);
+		System.out.println(volumnCoord);
+	}
+
+	private void fitScreen() {
+		int width = this.getWidth();
+		int height = this.getHeight();
+		priceCoord.getTimeAxis().setScreenLow(100);
+		priceCoord.getTimeAxis().setScreenHigh(width - 50);
+		priceCoord.getYAxis().setScreenLow(50);
+		int priceScreenHigh = height - 200;
+		priceCoord.getYAxis().setScreenHigh(priceScreenHigh);
+		volumnCoord.getYAxis().setScreenLow(priceScreenHigh + 20);
+		volumnCoord.getYAxis().setScreenHigh(height - 50);
+	}
+
+	protected void paintComponent(Graphics g) {
+		g.clearRect(0, 0, this.getWidth(), this.getHeight());
+		g.setColor(Color.black);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		// priceCoord.showBack(g);
+		priceCoord.paintAxis(g);
+		// volumnCoord.showBack(g);
+		volumnCoord.paintAxis(g);
+		g.setColor(Color.GRAY);
+
+		for (EquityPriceBean price : priceList) {
+			int x0 = priceCoord.getTimeAxis().getScreen(price.getDate());
+			int yo = priceCoord.getYAxis().getScreen(price.getPriceOpen());
+			int yc = priceCoord.getYAxis().getScreen(price.getPriceClose());
+			int yl = priceCoord.getYAxis().getScreen(price.getPriceLow());
+			int yh = priceCoord.getYAxis().getScreen(price.getPriceHigh());
+
+			// paintComponent K line
+			if (price.getPriceClose() > price.getPriceOpen()) {
+				g.setColor(Color.GREEN);
+			} else {
+				g.setColor(Color.RED);
+			}
+			g.fillRect(x0 - 2, Math.min(yo, yc), 5, Math.abs(yo - yc) + 2);
+			g.drawLine(x0, yl, x0, yh);
+
+			// paintComponent volum
+			int yvl = volumnCoord.getYAxis().getScreen(0d);
+			int yvh = volumnCoord.getYAxis().getScreen(price.getVolumn() + 0d);
+			g.fillRect(x0 - 2, yvh, 5, yvl - yvh);
+		}
+		// g.setColor(this.getForeground());
+	}
+}

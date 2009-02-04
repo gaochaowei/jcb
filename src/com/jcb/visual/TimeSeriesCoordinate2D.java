@@ -3,14 +3,15 @@ package com.jcb.visual;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.jcb.util.CommonUtils;
 import com.jcb.visual.Axis.Orientation;
 
-public class TimeSeriesCord {
+public class TimeSeriesCoordinate2D {
 
 	private TimeSeriesAxis timeAxis = new TimeSeriesAxis();
 	private RealAxis yAxis = new RealAxis();
 
-	public TimeSeriesCord() {
+	public TimeSeriesCoordinate2D() {
 		yAxis.setOrientation(Orientation.VERTICAL);
 	}
 
@@ -63,5 +64,14 @@ public class TimeSeriesCord {
 
 	public void paintYAxis(Graphics g) {
 		yAxis.paint(g, timeAxis.getScreenLow());
+	}
+
+	public void paintAxis(Graphics g) {
+		paintXAxis(g);
+		paintYAxis(g);
+	}
+
+	public String toString() {
+		return CommonUtils.getBeanValue(this);
 	}
 }

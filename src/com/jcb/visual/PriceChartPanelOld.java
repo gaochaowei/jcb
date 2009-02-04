@@ -41,7 +41,7 @@ import com.jcb.visual.ValueAxis.Scale;
  * 
  * @author gcw
  */
-public class MoneyPanel extends JPanel implements ComponentListener,
+public class PriceChartPanelOld extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, ActionListener {
 
 	private static final long serialVersionUID = -3464685432158185930L;
@@ -50,8 +50,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 	private double minPrice = Double.MAX_VALUE;
 	private long maxVolumn = 0;
 	// private int x = -1, y = -1;
-	private TimeSeriesCord cord = null;
-	private TimeSeriesCord cord2 = null;
+	private TimeSeriesCoordinate2D cord = null;
+	private TimeSeriesCoordinate2D cord2 = null;
 	private double[] avgSMA;
 	private double[] avgsEMA;
 	private double[] avgSMMA;
@@ -62,8 +62,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 	private Line2D activeLine = null;
 	private int x1, y1;
 	private int margin = 30;
-	// private Date dateFrom = DateUtils.addDays(new Date(), -100);
-	// private Date dateTo = new Date();
+
 	private String symbol = null;
 	private Date selected = null;
 	private JLabel lblSymbol = new JLabel("Symbol");
@@ -140,7 +139,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 			dv.add(px.getDate());
 		}
 
-		cord = new TimeSeriesCord();
+		cord = new TimeSeriesCoordinate2D();
 		cord.getTimeAxis().setValueLow(dv.firstElement());
 		cord.getTimeAxis().setValueHigh(dv.lastElement());
 		cord.getTimeAxis().setScreenLow(margin);
@@ -150,7 +149,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		cord.getYAxis().setScreenLow(toolBar.getHeight() + margin);
 		cord.getYAxis().setScreenHigh(getHeight() - margin - 100);
 
-		cord2 = new TimeSeriesCord();
+		cord2 = new TimeSeriesCoordinate2D();
 		cord2.setTimeAxis(cord.getTimeAxis());
 		cord2.getYAxis().setValueLow(0d);
 		cord2.getYAxis().setValueHigh(maxVolumn + 0d);
@@ -165,7 +164,7 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		avgsVMA = GMath.computeVolumeMA(pxs, 20);
 	}
 
-	public MoneyPanel() {
+	public PriceChartPanelOld() {
 		this.setLayout(new BorderLayout());
 		this.addComponentListener(this);
 		butLOG.addActionListener(this);
@@ -221,8 +220,8 @@ public class MoneyPanel extends JPanel implements ComponentListener,
 		if (cord.getTimeAxis().containScreen(state.x)) {
 			Date selectedDate = cord.getTimeAxis().getValue(state.x);
 			EquityPriceBean px = getPrice(pxs, selectedDate);
-			g.drawString(px.getSymbol(), cord.getTimeAxis().getScreenLow(),
-					cord.getYAxis().getScreenLow() - 5);
+			g.drawString(px.getEquity().getSymbol(), cord.getTimeAxis()
+					.getScreenLow(), cord.getYAxis().getScreenLow() - 5);
 			g.drawString(String.format("Date:%1$td/%1$tm/%1$tY", px.getDate()),
 					cord.getTimeAxis().getScreenLow() + 50, cord.getYAxis()
 							.getScreenLow() - 5);
