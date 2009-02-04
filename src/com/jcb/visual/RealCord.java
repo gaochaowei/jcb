@@ -3,46 +3,30 @@ package com.jcb.visual;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.jcb.util.CommonUtils;
 import com.jcb.visual.Axis.Orientation;
 
-public class TimeSeriesCord {
+public class RealCord {
 
-	private TimeSeriesAxis timeAxis = new TimeSeriesAxis();
-	private RealAxis yAxis = new RealAxis();
+	public RealAxis xAxis = new RealAxis();
+	public RealAxis yAxis = new RealAxis();
 
-	public TimeSeriesCord() {
+	public RealCord() {
 		yAxis.setOrientation(Orientation.VERTICAL);
-	}
-
-	public TimeSeriesAxis getTimeAxis() {
-		return timeAxis;
-	}
-
-	public void setTimeAxis(TimeSeriesAxis timeAxis) {
-		this.timeAxis = timeAxis;
-	}
-
-	public RealAxis getYAxis() {
-		return yAxis;
-	}
-
-	public void setYAxis(RealAxis axis) {
-		yAxis = axis;
 	}
 
 	public void showBack(Graphics g) {
 		Color temp = g.getColor();
 		g.setColor(Color.black);
-		g.fillRect(timeAxis.getScreenLow(), yAxis.getScreenLow(), timeAxis
+		g.fillRect(xAxis.getScreenLow(), yAxis.getScreenLow(), xAxis
 				.getScreenSize(), yAxis.getScreenSize());
 		g.setColor(temp);
 	}
 
 	public void showXLine(Graphics g, int x) {
-		if (timeAxis.containScreen(x)) {
+		if (xAxis.containScreen(x)) {
 			Color temp = g.getColor();
 			g.setColor(Color.white);
-			x = timeAxis.getScreen(timeAxis.getValue(x));
 			g.drawLine(x, yAxis.getScreenHigh(), x, yAxis.getScreenLow());
 			g.setColor(temp);
 		}
@@ -52,16 +36,29 @@ public class TimeSeriesCord {
 		if (yAxis.containScreen(y)) {
 			Color temp = g.getColor();
 			g.setColor(Color.LIGHT_GRAY);
-			g.drawLine(timeAxis.getScreenHigh(), y, timeAxis.getScreenLow(), y);
+			g.drawLine(xAxis.getScreenHigh(), y, xAxis.getScreenHigh(), y);
 			g.setColor(temp);
 		}
 	}
 
 	public void paintXAxis(Graphics g) {
-		timeAxis.paint(g, yAxis.getScreenHigh());
+		xAxis.paint(g, yAxis.getScreenHigh());
 	}
 
 	public void paintYAxis(Graphics g) {
-		yAxis.paint(g, timeAxis.getScreenLow());
+		yAxis.paint(g, xAxis.getScreenLow());
+	}
+
+	public boolean containPosition(int x, int y) {
+		return xAxis.containScreen(x) && yAxis.containScreen(y);
+	}
+
+	public boolean containValue(double x, double y) {
+		return xAxis.containValue(x) && yAxis.containValue(y);
+	}
+
+	@Override
+	public String toString() {
+		return CommonUtils.getBeanValue(this);
 	}
 }

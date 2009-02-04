@@ -31,7 +31,7 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private static final long serialVersionUID = -3413261450239176866L;
-	private XYCord cord = new XYCord();
+	private RealCord cord = new RealCord();
 	private int margin = 50;
 	private List<Expression> exps = new ArrayList<Expression>();
 	private Expression expReg;
@@ -61,20 +61,20 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 
 	private void initCord() {
 		System.out.println("initCord");
-		cord.xaxis.vr.l = margin;
-		cord.xaxis.vr.h = margin + 100;
-		cord.xaxis.dr.l = 0;
-		cord.xaxis.dr.h = 100;
-		cord.yaxis.vr.l = 0;
-		cord.yaxis.vr.h = 100;
-		cord.yaxis.dr.l = 0;
-		cord.yaxis.dr.h = 100;
+		cord.xAxis.setScreenLow(margin);
+		cord.xAxis.setScreenHigh(margin + 100);
+		cord.xAxis.setValueLow(0d);
+		cord.xAxis.setValueHigh(100d);
+		cord.yAxis.setScreenLow(0);
+		cord.yAxis.setScreenHigh(100);
+		cord.yAxis.setValueLow(0d);
+		cord.yAxis.setValueHigh(100d);
 		System.out.println(cord);
 	}
 
 	private void drawPoint(Graphics g, double x, double y) {
-		int px = cord.xaxis.getPosition(x);
-		int py = cord.yaxis.getPosition(y);
+		int px = cord.xAxis.getScreen(x);
+		int py = cord.yAxis.getScreen(y);
 		g.setColor(Color.RED);
 		g.drawLine(px - 2, py + 2, px + 2, py - 2);
 		g.drawLine(px - 2, py - 2, px + 2, py + 2);
@@ -89,11 +89,12 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 
 	private void paintFunction(Graphics g, Expression exp) {
 		g.setColor(Color.black);
-		for (int x = cord.xaxis.vr.l + 1; x <= cord.xaxis.vr.h; x++) {
-			int y0 = cord.yaxis.getPosition(exp.compute(cord.xaxis
-					.getData(x - 1)));
-			int y1 = cord.yaxis.getPosition(exp.compute(cord.xaxis.getData(x)));
-			if (cord.yaxis.vr.contains(y0) && cord.yaxis.vr.contains(y1)) {
+		for (int x = cord.xAxis.getScreenLow() + 1; x <= cord.xAxis
+				.getScreenHigh(); x++) {
+			int y0 = cord.yAxis.getScreen(exp.compute(cord.xAxis
+					.getValue(x - 1)));
+			int y1 = cord.yAxis.getScreen(exp.compute(cord.xAxis.getValue(x)));
+			if (cord.yAxis.containScreen(y0) && cord.yAxis.containScreen(y1)) {
 				g.drawLine(x - 1, y0, x, y1);
 			}
 		}
@@ -112,17 +113,19 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		}
 		for (Expression exp : exps) {
 			paintFunction(g, exp);
-			if (cord.xaxis.vr.contains(x)) {
-				int y = cord.yaxis.getPosition(exp.compute(cord.xaxis
-						.getData(x)));
-				if (cord.yaxis.vr.contains(y)) {
+			if (cord.xAxis.containScreen(x)) {
+				int y = cord.yAxis.getScreen(exp
+						.compute(cord.xAxis.getValue(x)));
+				if (cord.yAxis.containScreen(y)) {
 					g.setColor(Color.red);
-					g.drawLine(x, y, x, cord.yaxis.vr.h);
-					g.drawLine(cord.yaxis.vr.l, y, x, y);
-					double dx = cord.xaxis.getData(x);
-					double dy = cord.yaxis.getData(y);
-					g.drawString(String.valueOf(dx), x, cord.yaxis.vr.h);
-					g.drawString(String.valueOf(dy), cord.xaxis.vr.l, y);
+					g.drawLine(x, y, x, cord.yAxis.getScreenHigh());
+					g.drawLine(cord.yAxis.getScreenLow(), y, x, y);
+					double dx = cord.xAxis.getValue(x);
+					double dy = cord.yAxis.getValue(y);
+					g.drawString(String.valueOf(dx), x, cord.yAxis
+							.getScreenHigh());
+					g.drawString(String.valueOf(dy), cord.xAxis.getScreenLow(),
+							y);
 				}
 			}
 		}
@@ -141,8 +144,8 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 					g2d.setComposite(AlphaComposite.getInstance(
 							AlphaComposite.SRC_OVER, 0.1f));
 					g2d.setColor(Color.red);
-					g2d.fillRect(minx, cord.yaxis.vr.l, dx, cord.yaxis.vr
-							.length());
+					g2d.fillRect(minx, cord.yAxis.getScreenLow(), dx,
+							cord.yAxis.getScreenSize());
 					g2d.setComposite(cp);
 				}
 				break;
@@ -153,8 +156,8 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 					g2d.setComposite(AlphaComposite.getInstance(
 							AlphaComposite.SRC_OVER, 0.1f));
 					g2d.setColor(Color.red);
-					g2d.fillRect(cord.xaxis.vr.l, miny, cord.xaxis.vr.length(),
-							dy);
+					g2d.fillRect(cord.xAxis.getScreenLow(), miny, cord.xAxis
+							.getScreenSize(), dy);
 					g2d.setComposite(cp);
 				}
 				break;
@@ -229,20 +232,20 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 				this.setCursor(Cursor.getDefaultCursor());
 				break;
 			case ZOOM_X:
-				cord.xaxis.dr.setRange(cord.xaxis.getData(x1), cord.xaxis
-						.getData(e.getX()));
+				// cord.xAxis.dr.setRange(cord.xAxis.getValue(x1), cord.xAxis
+				// .getValue(e.getX()));
 				repaint();
 				break;
 			case ZOOM_Y:
-				cord.yaxis.dr.setRange(cord.yaxis.getData(y1), cord.yaxis
-						.getData(e.getY()));
+				// cord.yAxis.dr.setRange(cord.yAxis.getValue(y1), cord.yAxis
+				// .getValue(e.getY()));
 				repaint();
 				break;
 			case ZOOM_XY:
-				cord.xaxis.dr.setRange(cord.xaxis.getData(x1), cord.xaxis
-						.getData(e.getX()));
-				cord.yaxis.dr.setRange(cord.yaxis.getData(y1), cord.yaxis
-						.getData(e.getY()));
+				// cord.xAxis.dr.setRange(cord.xAxis.getValue(x1), cord.xAxis
+				// .getValue(e.getX()));
+				// cord.yAxis.dr.setRange(cord.yAxis.getValue(y1), cord.yAxis
+				// .getValue(e.getY()));
 				repaint();
 				break;
 			default:
@@ -261,13 +264,13 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
 			switch (mode) {
 			case DRAG:
-				double dx = (e.getX() - x1) * cord.xaxis.getScale();
-				double dy = (y1 - e.getY()) * cord.yaxis.getScale();
-				cord.xaxis.dr.move(-dx);
-				cord.yaxis.dr.move(-dy);
-				x1 = e.getX();
-				y1 = e.getY();
-				repaint();
+				// double dx = (e.getX() - x1) * cord.xAxis.getScale();
+				// double dy = (y1 - e.getY()) * cord.yAxis.getScale();
+				// cord.xAxis.dr.move(-dx);
+				// cord.yAxis.dr.move(-dy);
+				// x1 = e.getX();
+				// y1 = e.getY();
+				// repaint();
 				break;
 			case ZOOM_X:
 			case ZOOM_Y:
@@ -288,28 +291,28 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		System.out.println(e.getScrollType());
 		System.out.println(e.getWheelRotation());
 		System.out.println(e.getUnitsToScroll());
-		double x = Math.pow(2, e.getWheelRotation() / 10d);
+		// double x = Math.pow(2, e.getWheelRotation() / 10d);
 		if (notches < 0) {
-			cord.xaxis.dr.wide(x);
-			cord.yaxis.dr.wide(x);
-		} else {
-			cord.xaxis.dr.wide(x);
-			cord.yaxis.dr.wide(x);
+			// cord.xAxis.dr.wide(x);
+			// cord.yAxis.dr.wide(x);
+			// } else {
+			// cord.xAxis.dr.wide(x);
+			// cord.yAxis.dr.wide(x);
 		}
 		repaint();
 	}
 
 	public synchronized void adjustCord() {
 		System.out.println("adjustCord");
-		int dx = getWidth() - cord.xaxis.vr.h;
-		int dy = getHeight() - margin - cord.yaxis.vr.h;
-		double xscale = cord.xaxis.getScale();
-		double yscale = cord.yaxis.getScale();
-		cord.xaxis.vr.h += dx;
-		cord.xaxis.dr.h += (dx * xscale);
-		cord.yaxis.vr.h += dy;
-		cord.yaxis.dr.h += (dy * yscale);
-		System.out.println(cord);
+		// int dx = getWidth() - cord.xAxis.getScreenHigh();
+		// int dy = getHeight() - margin - cord.yAxis.getScreenHigh();
+		// double xscale = cord.xAxis.getScale();
+		// double yscale = cord.yAxis.getScale();
+		// cord.xAxis.getScreenHigh() += dx;
+		// cord.xAxis.getValueHigh() += (dx * xscale);
+		// cord.yAxis.getScreenHigh() += dy;
+		// cord.yAxis.getValueHigh() += (dy * yscale);
+		// System.out.println(cord);
 	}
 
 	public void addExpression(String s) {
@@ -368,19 +371,19 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		}
 
 		public void zoomIn() {
-			cord.xaxis.dr.l /= 1.01;
-			cord.xaxis.dr.h /= 1.01;
-			cord.yaxis.dr.l /= 1.01;
-			cord.yaxis.dr.h /= 1.01;
-			repaint();
+			// cord.xAxis.getValueLow() /= 1.01;
+			// cord.xAxis.getValueHigh() /= 1.01;
+			// cord.yAxis.getValueLow() /= 1.01;
+			// cord.yAxis.getValueHigh() /= 1.01;
+			// repaint();
 		}
 
 		public void zoomOut() {
-			cord.xaxis.dr.l *= 1.01;
-			cord.xaxis.dr.h *= 1.01;
-			cord.yaxis.dr.l *= 1.01;
-			cord.yaxis.dr.h *= 1.01;
-			repaint();
+			// cord.xAxis.getValueLow() *= 1.01;
+			// cord.xAxis.getValueHigh() *= 1.01;
+			// cord.yAxis.getValueLow() *= 1.01;
+			// cord.yAxis.getValueHigh() *= 1.01;
+			// repaint();
 		}
 
 		public void process(String methodName, long time, long loop) {
@@ -414,7 +417,7 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 				for (int i = 0; i < randoms.length;) {
 					double px = randomData.nextGaussian(300, 100);
 					double py = randomData.nextGaussian(100, 100);
-					if (cord.containData(px, py)) {
+					if (cord.containValue(px, py)) {
 						randoms[i][0] = px;
 						randoms[i][1] = py;
 						i++;

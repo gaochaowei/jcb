@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 public class CommonUtils {
@@ -114,4 +115,15 @@ public class CommonUtils {
 		}
 	}
 
+	public static void printBean(Object bean) {
+		System.out.println(getBeanValue(bean));
+	}
+
+	public static String getBeanValue(Object bean) {
+		try {
+			return BeanUtils.describe(bean).toString();
+		} catch (Exception e) {
+			return bean.hashCode() + "@" + bean.getClass().getCanonicalName();
+		}
+	}
 }
