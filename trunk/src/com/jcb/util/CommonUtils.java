@@ -126,4 +126,13 @@ public class CommonUtils {
 			return bean.hashCode() + "@" + bean.getClass().getCanonicalName();
 		}
 	}
+
+	public static Date min(Date d1, Date d2) {
+		return d1.before(d2) ? d1 : d2;
+	}
+
+	public static Date max(Date d1, Date d2) {
+		return d1.after(d2) ? d1 : d2;
+	}
+
 }

@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import com.jcb.util.CommonUtils;
 import com.jcb.visual.Axis.Orientation;
 
-public class RealCord {
+public class RealCoordinate2D {
 
 	public RealAxis xAxis = new RealAxis();
 	public RealAxis yAxis = new RealAxis();
 
-	public RealCord() {
+	public RealCoordinate2D() {
 		yAxis.setOrientation(Orientation.VERTICAL);
 	}
 

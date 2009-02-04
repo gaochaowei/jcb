@@ -38,11 +38,11 @@ public abstract class ValueAxis<E> extends Axis<E> {
 	}
 
 	public double getValueSize() {
-		return trasform(convertDouble(valueHigh))
-				- trasform(convertDouble(valueLow));
+		return transform(convertDouble(valueHigh))
+				- transform(convertDouble(valueLow));
 	}
 
-	public double trasform(double value) {
+	public double transform(double value) {
 		switch (scale) {
 		case LINEAR:
 			return value;
@@ -53,7 +53,7 @@ public abstract class ValueAxis<E> extends Axis<E> {
 		}
 	}
 
-	public double inverseTrasform(double value) {
+	public double inverseTransform(double value) {
 		switch (scale) {
 		case LINEAR:
 			return value;
@@ -71,10 +71,10 @@ public abstract class ValueAxis<E> extends Axis<E> {
 	private double getZeroValueScreen() {
 		switch (orientation) {
 		case HORIZONTAL:
-			return screenLow - trasform(convertDouble(valueLow))
+			return screenLow - transform(convertDouble(valueLow))
 					/ getPixelSize();
 		default:
-			return screenHigh + trasform(convertDouble(valueLow))
+			return screenHigh + transform(convertDouble(valueLow))
 					/ getPixelSize();
 		}
 	}
@@ -89,28 +89,28 @@ public abstract class ValueAxis<E> extends Axis<E> {
 			value = (getZeroValueScreen() - screen) * getPixelSize();
 			break;
 		}
-		return inverseTrasform(value);
+		return value;
 	}
 
 	public E getValue(int screen) {
-		return convertObject(getInternalValue(screen));
+		return convertObject(inverseTransform(getInternalValue(screen)));
 	}
 
 	private int getScreenUsingInternalValue(double value) {
 		double screen;
 		switch (orientation) {
 		case HORIZONTAL:
-			screen = getZeroValueScreen() + trasform(value) / getPixelSize();
+			screen = getZeroValueScreen() + value / getPixelSize();
 			break;
 		default:
-			screen = getZeroValueScreen() - trasform(value) / getPixelSize();
+			screen = getZeroValueScreen() - value / getPixelSize();
 			break;
 		}
 		return (int) Math.round(screen);
 	}
 
 	public int getScreen(E value) {
-		return getScreenUsingInternalValue(trasform(convertDouble(value)));
+		return getScreenUsingInternalValue(transform(convertDouble(value)));
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class FunctionPanel extends JPanel implements ComponentListener,
 		MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private static final long serialVersionUID = -3413261450239176866L;
-	private RealCord cord = new RealCord();
+	private RealCoordinate2D cord = new RealCoordinate2D();
 	private int margin = 50;
 	private List<Expression> exps = new ArrayList<Expression>();
 	private Expression expReg;
