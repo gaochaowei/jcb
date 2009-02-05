@@ -15,7 +15,7 @@ public class Test {
 		DecimalFormat fmt = AxisUtils.getFormat(0.23);
 		System.out.println(fmt.format(1203.5));
 		System.out.println(AxisUtils.getUnit(1203.5));
-		String[] cals = AxisUtils.getCalibration(100, 2788);
+		String[] cals = AxisUtils.getLabels(100, 2788);
 		CommonUtils.printArray(cals);
 		List<EquityPriceBean> pxs = EquityReader.fetchEquityPrice("c6L.SI",
 				DateUtils.addDays(new Date(), -20), new Date(), Frequency.DATE);

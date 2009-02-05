@@ -2,34 +2,34 @@ package com.jcb.chart.plot;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.geo.TimeCoordinate2D;
-import com.jcb.chart.geo.ValueAxis.Scale;
+import com.jcb.chart.geo.Coordinate;
 import com.jcb.math.expression.Expression;
 
 public class PriceChartPlot {
 
-	private TimeCoordinate2D priceCoord;
-	private TimeCoordinate2D volumnCoord;
+	private Coordinate<Date, Double> priceCoord;
+	private Coordinate<Date, Double> volumnCoord;
 	private List<EquityPriceBean> priceList;
 
-	public TimeCoordinate2D getPriceCoord() {
+	public Coordinate<Date, Double> getPriceCoord() {
 		return priceCoord;
 	}
 
-	public void setPriceCoord(TimeCoordinate2D priceCoord) {
+	public void setPriceCoord(Coordinate<Date, Double> priceCoord) {
 		this.priceCoord = priceCoord;
 	}
 
-	public TimeCoordinate2D getVolumnCoord() {
+	public Coordinate<Date, Double> getVolumnCoord() {
 		return volumnCoord;
 	}
 
-	public void setVolumnCoord(TimeCoordinate2D volumnCoord) {
+	public void setVolumnCoord(Coordinate<Date, Double> volumnCoord) {
 		this.volumnCoord = volumnCoord;
 	}
 
@@ -49,11 +49,11 @@ public class PriceChartPlot {
 	public void plotCandles(Graphics g) {
 		g.setColor(Color.GRAY);
 		for (EquityPriceBean price : priceList) {
-			int x0 = priceCoord.getTimeAxis().getScreen(price.getDate());
-			int yo = priceCoord.getYAxis().getScreen(price.getPriceOpen());
-			int yc = priceCoord.getYAxis().getScreen(price.getPriceClose());
-			int yl = priceCoord.getYAxis().getScreen(price.getPriceLow());
-			int yh = priceCoord.getYAxis().getScreen(price.getPriceHigh());
+			int x0 = priceCoord.getXScreen(price.getDate());
+			int yo = priceCoord.getYScreen(price.getPriceOpen());
+			int yc = priceCoord.getYScreen(price.getPriceClose());
+			int yl = priceCoord.getYScreen(price.getPriceLow());
+			int yh = priceCoord.getYScreen(price.getPriceHigh());
 			if (price.getPriceClose() > price.getPriceOpen()) {
 				g.setColor(Color.GREEN);
 			} else {
@@ -67,9 +67,9 @@ public class PriceChartPlot {
 	public void plotVolumn(Graphics g) {
 		g.setColor(Color.BLACK);
 		for (EquityPriceBean price : priceList) {
-			int x0 = priceCoord.getTimeAxis().getScreen(price.getDate());
-			int yvl = volumnCoord.getYAxis().getScreen(0d);
-			int yvh = volumnCoord.getYAxis().getScreen(price.getVolumn() + 0d);
+			int x0 = priceCoord.getXScreen(price.getDate());
+			int yvl = volumnCoord.getYScreen(0d);
+			int yvh = volumnCoord.getYScreen(price.getVolumn() + 0d);
 			g.fillRect(x0 - 2, yvh, 5, yvl - yvh);
 		}
 	}
@@ -78,21 +78,18 @@ public class PriceChartPlot {
 		Expression exp = new Expression.Var("x").times(regression.getSlope())
 				.add(regression.getIntercept());
 		g.setColor(Color.black);
-		int screenLow = priceCoord.getTimeAxis().getScreenLow();
-		int screenHigh = priceCoord.getTimeAxis().getScreenHigh();
+		int screenLow = priceCoord.getXScreenLow();
+		int screenHigh = priceCoord.getXScreenHigh();
 		for (int x = screenLow + 1; x <= screenHigh; x++) {
-			double time0 = priceCoord.getTimeAxis().getValue(x - 1).getTime();
-			double time1 = priceCoord.getTimeAxis().getValue(x).getTime();
-			double yv0 = exp.compute(time0);
-			double yv1 = exp.compute(time1);
-			if (priceCoord.getYAxis().getScale() == Scale.LOG) {
-				yv0 = Math.exp(yv0);
-				yv1 = Math.exp(yv1);
-			}
-			int y0 = priceCoord.getYAxis().getScreen(yv0);
-			int y1 = priceCoord.getYAxis().getScreen(yv1);
-			if (priceCoord.getYAxis().containScreen(y0)
-					&& priceCoord.getYAxis().containScreen(y1)) {
+			double time0 = priceCoord.getXValue(x - 1).getTime();
+			double time1 = priceCoord.getXValue(x).getTime();
+			double yv0 = priceCoord.getYConverter()
+					.computer(exp.compute(time0));
+			double yv1 = priceCoord.getYConverter()
+					.computer(exp.compute(time1));
+			int y0 = priceCoord.getYScreen(yv0);
+			int y1 = priceCoord.getYScreen(yv1);
+			if (priceCoord.containYScreen(y0) && priceCoord.containYScreen(y1)) {
 				g.drawLine(x - 1, y0, x, y1);
 			}
 		}

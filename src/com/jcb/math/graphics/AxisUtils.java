@@ -13,7 +13,7 @@ import com.jcb.util.CommonUtils;
 
 public class AxisUtils {
 
-	public static String[] getCalibration(double min, double max) {
+	public static String[] getLabels(double min, double max) {
 		double unit = AxisUtils.getUnit(max - min);
 		DecimalFormat format = AxisUtils.getFormat(unit);
 		int low = (int) Math.ceil(min / unit);
@@ -64,7 +64,7 @@ public class AxisUtils {
 		return format;
 	}
 
-	public static Map<Date, String> getCalibration(Date start, Date end) {
+	public static Map<Date, String> getLabels(Date start, Date end) {
 		int days = CommonUtils.diffInDays(start, end);
 		int[][] spans = { { Calendar.DATE, 1 }, { Calendar.DATE, 2 },
 				{ Calendar.DATE, 5 }, { Calendar.DATE, 10 },

@@ -5,19 +5,16 @@ import java.util.List;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.geo.ValueAxis.Scale;
+import com.jcb.chart.geo.Function;
 
 public class Regression {
 
 	public static SimpleRegression regression(List<EquityPriceBean> priceList,
-			Scale scale) {
+			Function<Double, Double> convertor) {
 		SimpleRegression reg = new SimpleRegression();
 		for (EquityPriceBean price : priceList) {
-			if (scale == Scale.LINEAR)
-				reg.addData(price.getDate().getTime(), price.getPriceLow());
-			else
-				reg.addData(price.getDate().getTime(), Math.log(price
-						.getPriceLow()));
+			reg.addData(price.getDate().getTime(), convertor.computer(price
+					.getPriceLow()));
 		}
 		return reg;
 	}
