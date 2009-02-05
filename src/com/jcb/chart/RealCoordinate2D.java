@@ -1,10 +1,10 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.jcb.chart.Axis.Orientation;
 import com.jcb.util.CommonUtils;
-import com.jcb.visual.Axis.Orientation;
 
 public class RealCoordinate2D {
 

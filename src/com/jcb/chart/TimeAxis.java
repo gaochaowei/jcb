@@ -1,4 +1,4 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.jcb.math.graphics.AxisUtils;
 
-public class TimeSeriesAxis extends ValueAxis<Date> {
+public class TimeAxis extends ValueAxis<Date> {
 
 	protected double convertDouble(Date date) {
 		return date.getTime();

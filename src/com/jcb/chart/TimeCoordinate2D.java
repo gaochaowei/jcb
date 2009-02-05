@@ -1,25 +1,25 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.jcb.chart.Axis.Orientation;
 import com.jcb.util.CommonUtils;
-import com.jcb.visual.Axis.Orientation;
 
-public class TimeSeriesCoordinate2D {
+public class TimeCoordinate2D {
 
-	private TimeSeriesAxis timeAxis = new TimeSeriesAxis();
+	private TimeAxis timeAxis = new TimeAxis();
 	private RealAxis yAxis = new RealAxis();
 
-	public TimeSeriesCoordinate2D() {
+	public TimeCoordinate2D() {
 		yAxis.setOrientation(Orientation.VERTICAL);
 	}
 
-	public TimeSeriesAxis getTimeAxis() {
+	public TimeAxis getTimeAxis() {
 		return timeAxis;
 	}
 
-	public void setTimeAxis(TimeSeriesAxis timeAxis) {
+	public void setTimeAxis(TimeAxis timeAxis) {
 		this.timeAxis = timeAxis;
 	}
 

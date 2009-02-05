@@ -1,4 +1,4 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

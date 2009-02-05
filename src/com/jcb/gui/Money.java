@@ -23,9 +23,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import com.jcb.chart.GXYPanel;
+import com.jcb.chart.PriceChartPanelOld;
 import com.jcb.util.ImageUtils;
-import com.jcb.visual.GXYPanel;
-import com.jcb.visual.PriceChartPanelOld;
 
 public class Money extends JFrame implements ActionListener {
 
