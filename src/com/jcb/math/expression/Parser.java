@@ -1,4 +1,4 @@
-package com.jcb.math;
+package com.jcb.math.expression;
 
 import java.util.Stack;
 

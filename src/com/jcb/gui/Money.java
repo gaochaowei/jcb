@@ -23,7 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import com.jcb.chart.GXYPanel;
 import com.jcb.chart.PriceChartPanelOld;
 import com.jcb.util.ImageUtils;
 
@@ -37,18 +36,10 @@ public class Money extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenuBar();
 		PriceChartPanelOld chartPanel = new PriceChartPanelOld();
-		GXYPanel xyPanel = new GXYPanel();
 		JTabbedPane tabbedPane = new JTabbedPane();
-		// tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		// chartPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
-		// tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
-		xyPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 		tabbedPane.addTab("Price", new ImageIcon("images/icons/market.gif"),
 				chartPanel, "Price");
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-		tabbedPane
-				.addTab("Function", new ImageIcon("images/icons/function.gif"),
-						xyPanel, "Function");
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		// Create a panel and add components to it.
 		JPanel contentPane = new JPanel(new BorderLayout());

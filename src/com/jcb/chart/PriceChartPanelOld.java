@@ -36,7 +36,7 @@ import com.jcb.chart.geo.TimeCoordinate2D;
 import com.jcb.chart.geo.ValueAxis.Scale;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
-import com.jcb.math.GMath;
+import com.jcb.math.PriceChartMath;
 
 /**
  * 
@@ -157,12 +157,12 @@ public class PriceChartPanelOld extends JPanel implements ComponentListener,
 		cord2.getYAxis().setScreenLow(getHeight() - 80 - margin);
 		cord2.getYAxis().setScreenHigh(getHeight() - margin);
 
-		avgSMA = GMath.computeSMA(pxs, 20);
-		avgsEMA = GMath.computeEMA(pxs, 20, 0.05);
-		avgSMMA = GMath.computeSMMA(pxs, 20);
-		avgsLWMA = GMath.computeLWMA(pxs, 20);
-		avgsVWMA = GMath.computeVWMA(pxs, 20);
-		avgsVMA = GMath.computeVolumeMA(pxs, 20);
+		avgSMA = PriceChartMath.computeSMA(pxs, 20);
+		avgsEMA = PriceChartMath.computeEMA(pxs, 20, 0.05);
+		avgSMMA = PriceChartMath.computeSMMA(pxs, 20);
+		avgsLWMA = PriceChartMath.computeLWMA(pxs, 20);
+		avgsVWMA = PriceChartMath.computeVWMA(pxs, 20);
+		avgsVMA = PriceChartMath.computeVolumeMA(pxs, 20);
 	}
 
 	public PriceChartPanelOld() {

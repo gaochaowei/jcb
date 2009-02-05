@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
 import com.jcb.chart.geo.TimeCoordinate2D;
@@ -17,6 +18,7 @@ import com.jcb.chart.geo.ValueAxis.Scale;
 import com.jcb.chart.plot.PriceChartPlot;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
+import com.jcb.math.Regression;
 import com.jcb.util.CommonUtils;
 
 public class PriceChartPanel extends JPanel {
@@ -26,6 +28,7 @@ public class PriceChartPanel extends JPanel {
 	private TimeCoordinate2D volumnCoord; // @jve:decl-index=0:
 	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
 	private List<EquityPriceBean> priceList;
+	private SimpleRegression regression;
 	private PriceChartPlot plot;
 
 	/**
@@ -88,6 +91,7 @@ public class PriceChartPanel extends JPanel {
 		volumnCoord.getYAxis().setValueLow(0d);
 		volumnCoord.getYAxis().setValueHigh(volumnHigh);
 		plot.setPriceList(priceList);
+		regression = Regression.regression(priceList);
 	}
 
 	public List<EquityPriceBean> getPriceList() {
@@ -108,12 +112,10 @@ public class PriceChartPanel extends JPanel {
 
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
-		// g.setColor(Color.black);
-		// g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		// priceCoord.showBack(g);
-		// volumnCoord.showBack(g);
 		plot.paintAxis(g);
 		plot.plotCandles(g);
 		plot.plotVolumn(g);
+		plot.plotTrend(g, regression);
 	}
+
 }

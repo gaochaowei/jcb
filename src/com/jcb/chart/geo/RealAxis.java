@@ -11,6 +11,7 @@ import com.jcb.util.CommonUtils;
 public class RealAxis extends ValueAxis<Double> {
 
 	protected double convertDouble(Double value) {
+		System.out.println(value);
 		return value;
 	}
 
@@ -23,6 +24,7 @@ public class RealAxis extends ValueAxis<Double> {
 	}
 
 	public void paint(Graphics g, int screen) {
+		System.out.println(this.toString());
 		g.setColor(Color.GRAY);
 		String[] labels = AxisUtils.getCalibration(convertDouble(valueLow),
 				convertDouble(valueHigh));
