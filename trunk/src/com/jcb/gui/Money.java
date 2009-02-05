@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import com.jcb.chart.PriceChartPanelOld;
+import com.jcb.chart.PriceChartPanel;
 import com.jcb.util.ImageUtils;
 
 public class Money extends JFrame implements ActionListener {
@@ -35,7 +35,7 @@ public class Money extends JFrame implements ActionListener {
 		setIconImage(ImageUtils.readImage("money.gif"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenuBar();
-		PriceChartPanelOld chartPanel = new PriceChartPanelOld();
+		PriceChartPanel chartPanel = new PriceChartPanel();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Price", new ImageIcon("images/icons/market.gif"),
 				chartPanel, "Price");

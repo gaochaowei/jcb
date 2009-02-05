@@ -64,8 +64,8 @@ public class Expression {
 		}
 
 		@Override
-		public double compute(double var) {
-			return var;
+		public double compute(double value) {
+			return value;
 		}
 	}
 
