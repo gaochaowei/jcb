@@ -1,4 +1,4 @@
-package com.jcb.chart;
+package com.jcb.chart.geo;
 
 import com.jcb.util.CommonUtils;
 

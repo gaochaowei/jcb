@@ -32,7 +32,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.ValueAxis.Scale;
+import com.jcb.chart.geo.TimeCoordinate2D;
+import com.jcb.chart.geo.ValueAxis.Scale;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.math.GMath;

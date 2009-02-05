@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.List;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.TimeCoordinate2D;
+import com.jcb.chart.geo.TimeCoordinate2D;
 
 public class PriceChartPlotter {
 
