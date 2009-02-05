@@ -6,12 +6,13 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.jcb.chart.geo.RealCoordinate2D;
+import com.jcb.chart.geo.Coordinate;
+import com.jcb.chart.geo.Function;
 
 public class RealPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private RealCoordinate2D cd = new RealCoordinate2D(); // @jve:decl-index=0:
+	private Coordinate<Double, Double> cd;
 
 	/**
 	 * This is the default constructor
@@ -29,33 +30,27 @@ public class RealPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
+		cd = new Coordinate<Double, Double>(Function.NONE, Function.NONE);
+		fitScreen();
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent e) {
 				fitScreen();
 				repaint();
 			}
 		});
-		fitScreen();
 	}
 
 	public void fitScreen() {
 		int width = this.getWidth();
 		int height = this.getHeight();
-		cd.getXAxis().setScreenLow(50);
-		cd.getXAxis().setScreenHigh(width - 10);
-		cd.getYAxis().setScreenLow(10);
-		cd.getYAxis().setScreenHigh(height - 50);
-		cd.getXAxis().setValueLow(0d);
-		cd.getXAxis().setValueHigh(width - 60d);
-		cd.getYAxis().setValueLow(0d);
-		cd.getYAxis().setValueHigh(height - 60d);
+		cd.setScreenRange(50, width - 10, 10, height - 50);
+		cd.setValueRange(0d, width - 60d, 0d, height - 60d);
 	}
 
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(Color.BLACK);
-		cd.paintXAxis(g);
-		cd.paintYAxis(g);
+		cd.paintAxis(g);
 	}
 
 }

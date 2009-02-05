@@ -13,8 +13,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.geo.TimeCoordinate2D;
-import com.jcb.chart.geo.ValueAxis.Scale;
+import com.jcb.chart.geo.Coordinate;
+import com.jcb.chart.geo.Function;
 import com.jcb.chart.plot.PriceChartPlot;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
@@ -24,10 +24,10 @@ import com.jcb.util.CommonUtils;
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private TimeCoordinate2D priceCoord = new TimeCoordinate2D();
-	private TimeCoordinate2D volumnCoord = new TimeCoordinate2D(); // @jve:decl-index=0:
-	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
-	private List<EquityPriceBean> priceList; // @jve:decl-index=0:
+	private Coordinate<Date, Double> pcd;
+	private Coordinate<Date, Double> vcd;
+	private Map<Date, EquityPriceBean> priceMap;
+	private List<EquityPriceBean> priceList;
 	private SimpleRegression regression;
 	private PriceChartPlot plot;
 
@@ -47,11 +47,11 @@ public class PriceChartPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		volumnCoord.setTimeAxis(priceCoord.getTimeAxis());
-		priceCoord.getYAxis().setScale(Scale.LOG);
+		pcd = new Coordinate<Date, Double>(Function.SIMPLE_DATE, Function.NONE);
+		vcd = new Coordinate<Date, Double>(Function.SIMPLE_DATE, Function.NONE);
 		plot = new PriceChartPlot();
-		plot.setPriceCoord(priceCoord);
-		plot.setVolumnCoord(volumnCoord);
+		plot.setPriceCoord(pcd);
+		plot.setVolumnCoord(vcd);
 		fitScreen();
 		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
 				"BS6.SI", DateUtils.addDays(new Date(), -300), new Date(),
@@ -82,15 +82,10 @@ public class PriceChartPanel extends JPanel {
 			volumnHigh = Math.max(volumnHigh, price.getVolumn());
 
 		}
-		priceCoord.getTimeAxis().setValueLow(dateLow);
-		priceCoord.getTimeAxis().setValueHigh(dateHigh);
-		priceCoord.getYAxis().setValueLow(priceLow);
-		priceCoord.getYAxis().setValueHigh(priceHigh);
-		volumnCoord.getYAxis().setValueLow(0d);
-		volumnCoord.getYAxis().setValueHigh(volumnHigh);
+		pcd.setValueRange(dateLow, dateHigh, priceLow, priceHigh);
+		vcd.setValueRange(dateLow, dateHigh, 0d, volumnHigh);
 		plot.setPriceList(priceList);
-		regression = Regression.regression(priceList, priceCoord.getYAxis()
-				.getScale());
+		regression = Regression.regression(priceList, pcd.getYConverter());
 	}
 
 	public List<EquityPriceBean> getPriceList() {
@@ -100,13 +95,8 @@ public class PriceChartPanel extends JPanel {
 	private void fitScreen() {
 		int width = this.getWidth();
 		int height = this.getHeight();
-		priceCoord.getTimeAxis().setScreenLow(100);
-		priceCoord.getTimeAxis().setScreenHigh(width - 50);
-		priceCoord.getYAxis().setScreenLow(50);
-		int priceScreenHigh = height - 200;
-		priceCoord.getYAxis().setScreenHigh(priceScreenHigh);
-		volumnCoord.getYAxis().setScreenLow(priceScreenHigh + 20);
-		volumnCoord.getYAxis().setScreenHigh(height - 50);
+		pcd.setScreenRange(100, width - 50, 50, height - 200);
+		vcd.setScreenRange(100, width - 50, height - 180, height - 50);
 	}
 
 	protected void paintComponent(Graphics g) {
