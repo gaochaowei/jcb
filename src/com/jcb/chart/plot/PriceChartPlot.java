@@ -8,6 +8,7 @@ import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
 import com.jcb.chart.geo.TimeCoordinate2D;
+import com.jcb.chart.geo.ValueAxis.Scale;
 import com.jcb.math.expression.Expression;
 
 public class PriceChartPlot {
@@ -80,10 +81,16 @@ public class PriceChartPlot {
 		int screenLow = priceCoord.getTimeAxis().getScreenLow();
 		int screenHigh = priceCoord.getTimeAxis().getScreenHigh();
 		for (int x = screenLow + 1; x <= screenHigh; x++) {
-			double time1 = priceCoord.getTimeAxis().getValue(x - 1).getTime();
-			double time2 = priceCoord.getTimeAxis().getValue(x).getTime();
-			int y0 = priceCoord.getYAxis().getScreen(exp.compute(time1));
-			int y1 = priceCoord.getYAxis().getScreen(exp.compute(time2));
+			double time0 = priceCoord.getTimeAxis().getValue(x - 1).getTime();
+			double time1 = priceCoord.getTimeAxis().getValue(x).getTime();
+			double yv0 = exp.compute(time0);
+			double yv1 = exp.compute(time1);
+			if (priceCoord.getYAxis().getScale() == Scale.LOG) {
+				yv0 = Math.exp(yv0);
+				yv1 = Math.exp(yv1);
+			}
+			int y0 = priceCoord.getYAxis().getScreen(yv0);
+			int y1 = priceCoord.getYAxis().getScreen(yv1);
 			if (priceCoord.getYAxis().containScreen(y0)
 					&& priceCoord.getYAxis().containScreen(y1)) {
 				g.drawLine(x - 1, y0, x, y1);

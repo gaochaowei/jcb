@@ -24,10 +24,10 @@ import com.jcb.util.CommonUtils;
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private TimeCoordinate2D priceCoord; // @jve:decl-index=0:
-	private TimeCoordinate2D volumnCoord; // @jve:decl-index=0:
+	private TimeCoordinate2D priceCoord = new TimeCoordinate2D();
+	private TimeCoordinate2D volumnCoord = new TimeCoordinate2D(); // @jve:decl-index=0:
 	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
-	private List<EquityPriceBean> priceList;
+	private List<EquityPriceBean> priceList; // @jve:decl-index=0:
 	private SimpleRegression regression;
 	private PriceChartPlot plot;
 
@@ -47,8 +47,6 @@ public class PriceChartPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		priceCoord = new TimeCoordinate2D();
-		volumnCoord = new TimeCoordinate2D();
 		volumnCoord.setTimeAxis(priceCoord.getTimeAxis());
 		priceCoord.getYAxis().setScale(Scale.LOG);
 		plot = new PriceChartPlot();
@@ -91,7 +89,8 @@ public class PriceChartPanel extends JPanel {
 		volumnCoord.getYAxis().setValueLow(0d);
 		volumnCoord.getYAxis().setValueHigh(volumnHigh);
 		plot.setPriceList(priceList);
-		regression = Regression.regression(priceList);
+		regression = Regression.regression(priceList, priceCoord.getYAxis()
+				.getScale());
 	}
 
 	public List<EquityPriceBean> getPriceList() {
