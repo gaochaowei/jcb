@@ -1,9 +1,9 @@
-package com.jcb.chart;
+package com.jcb.chart.geo;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.jcb.chart.Axis.Orientation;
+import com.jcb.chart.geo.Axis.Orientation;
 import com.jcb.util.CommonUtils;
 
 public class RealCoordinate2D {

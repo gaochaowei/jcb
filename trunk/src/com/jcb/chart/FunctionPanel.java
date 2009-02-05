@@ -24,6 +24,7 @@ import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
+import com.jcb.chart.geo.RealCoordinate2D;
 import com.jcb.math.Expression;
 import com.jcb.util.CommonUtils;
 
