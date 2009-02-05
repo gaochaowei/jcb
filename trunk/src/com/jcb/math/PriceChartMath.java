@@ -12,7 +12,7 @@ import com.jcb.bean.EquityPriceBean;
  * 
  * @author gaocw
  */
-public class GMath {
+public class PriceChartMath {
 
 	public static double[] computeSMA(List<EquityPriceBean> pxs, int n) {
 		double[] avgs = new double[pxs.size()];

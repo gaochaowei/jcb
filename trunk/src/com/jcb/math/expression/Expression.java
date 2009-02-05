@@ -1,4 +1,4 @@
-package com.jcb.math;
+package com.jcb.math.expression;
 
 public class Expression {
 
@@ -19,6 +19,22 @@ public class Expression {
 
 	public double compute(double var) {
 		return e.compute(var);
+	}
+
+	public Expression times(Expression e) {
+		return new Expression.Times(this, e);
+	}
+
+	public Expression times(double value) {
+		return new Expression.Times(this, new Expression.Value(value));
+	}
+
+	public Expression add(Expression e) {
+		return new Expression.Add(this, e);
+	}
+
+	public Expression add(double value) {
+		return new Expression.Add(this, new Expression.Value(value));
 	}
 
 	public static class Var extends Expression {

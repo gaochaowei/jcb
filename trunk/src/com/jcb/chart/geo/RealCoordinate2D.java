@@ -8,8 +8,24 @@ import com.jcb.util.CommonUtils;
 
 public class RealCoordinate2D {
 
-	public RealAxis xAxis = new RealAxis();
-	public RealAxis yAxis = new RealAxis();
+	protected RealAxis xAxis = new RealAxis();
+	protected RealAxis yAxis = new RealAxis();
+
+	public RealAxis getXAxis() {
+		return xAxis;
+	}
+
+	public void setXAxis(RealAxis axis) {
+		xAxis = axis;
+	}
+
+	public RealAxis getYAxis() {
+		return yAxis;
+	}
+
+	public void setYAxis(RealAxis axis) {
+		yAxis = axis;
+	}
 
 	public RealCoordinate2D() {
 		yAxis.setOrientation(Orientation.VERTICAL);

@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
+import org.apache.commons.math.stat.regression.SimpleRegression;
+
 import com.jcb.bean.EquityPriceBean;
 import com.jcb.chart.geo.TimeCoordinate2D;
+import com.jcb.math.expression.Expression;
 
 public class PriceChartPlot {
 
@@ -67,6 +70,24 @@ public class PriceChartPlot {
 			int yvl = volumnCoord.getYAxis().getScreen(0d);
 			int yvh = volumnCoord.getYAxis().getScreen(price.getVolumn() + 0d);
 			g.fillRect(x0 - 2, yvh, 5, yvl - yvh);
+		}
+	}
+
+	public void plotTrend(Graphics g, SimpleRegression regression) {
+		Expression exp = new Expression.Var("x").times(regression.getSlope())
+				.add(regression.getIntercept());
+		g.setColor(Color.black);
+		int screenLow = priceCoord.getTimeAxis().getScreenLow();
+		int screenHigh = priceCoord.getTimeAxis().getScreenHigh();
+		for (int x = screenLow + 1; x <= screenHigh; x++) {
+			double time1 = priceCoord.getTimeAxis().getValue(x - 1).getTime();
+			double time2 = priceCoord.getTimeAxis().getValue(x).getTime();
+			int y0 = priceCoord.getYAxis().getScreen(exp.compute(time1));
+			int y1 = priceCoord.getYAxis().getScreen(exp.compute(time2));
+			if (priceCoord.getYAxis().containScreen(y0)
+					&& priceCoord.getYAxis().containScreen(y1)) {
+				g.drawLine(x - 1, y0, x, y1);
+			}
 		}
 	}
 }
