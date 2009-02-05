@@ -1,4 +1,4 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import com.jcb.visual.FunctionPanel.Mode;
+import com.jcb.chart.FunctionPanel.Mode;
 
 public class GXYPanel extends JPanel implements ComponentListener,
 		ActionListener {

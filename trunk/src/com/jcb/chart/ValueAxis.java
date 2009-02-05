@@ -1,4 +1,4 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import com.jcb.util.CommonUtils;
 

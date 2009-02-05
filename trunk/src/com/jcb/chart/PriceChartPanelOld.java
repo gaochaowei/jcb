@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,10 +32,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
+import com.jcb.chart.ValueAxis.Scale;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.math.GMath;
-import com.jcb.visual.ValueAxis.Scale;
 
 /**
  * 
@@ -50,8 +50,8 @@ public class PriceChartPanelOld extends JPanel implements ComponentListener,
 	private double minPrice = Double.MAX_VALUE;
 	private long maxVolumn = 0;
 	// private int x = -1, y = -1;
-	private TimeSeriesCoordinate2D cord = null;
-	private TimeSeriesCoordinate2D cord2 = null;
+	private TimeCoordinate2D cord = null;
+	private TimeCoordinate2D cord2 = null;
 	private double[] avgSMA;
 	private double[] avgsEMA;
 	private double[] avgSMMA;
@@ -139,7 +139,7 @@ public class PriceChartPanelOld extends JPanel implements ComponentListener,
 			dv.add(px.getDate());
 		}
 
-		cord = new TimeSeriesCoordinate2D();
+		cord = new TimeCoordinate2D();
 		cord.getTimeAxis().setValueLow(dv.firstElement());
 		cord.getTimeAxis().setValueHigh(dv.lastElement());
 		cord.getTimeAxis().setScreenLow(margin);
@@ -149,7 +149,7 @@ public class PriceChartPanelOld extends JPanel implements ComponentListener,
 		cord.getYAxis().setScreenLow(toolBar.getHeight() + margin);
 		cord.getYAxis().setScreenHigh(getHeight() - margin - 100);
 
-		cord2 = new TimeSeriesCoordinate2D();
+		cord2 = new TimeCoordinate2D();
 		cord2.setTimeAxis(cord.getTimeAxis());
 		cord2.getYAxis().setValueLow(0d);
 		cord2.getYAxis().setValueHigh(maxVolumn + 0d);

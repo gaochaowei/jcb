@@ -1,7 +1,6 @@
-package com.jcb.visual;
+package com.jcb.chart;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,18 +12,20 @@ import javax.swing.JPanel;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
+import com.jcb.chart.ValueAxis.Scale;
+import com.jcb.chart.plotter.PriceChartPlotter;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.util.CommonUtils;
-import com.jcb.visual.ValueAxis.Scale;
 
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private TimeSeriesCoordinate2D priceCoord; // @jve:decl-index=0:
-	private TimeSeriesCoordinate2D volumnCoord; // @jve:decl-index=0:
+	private TimeCoordinate2D priceCoord; // @jve:decl-index=0:
+	private TimeCoordinate2D volumnCoord; // @jve:decl-index=0:
 	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
 	private List<EquityPriceBean> priceList;
+	private PriceChartPlotter plot;
 
 	/**
 	 * This is the default constructor
@@ -42,10 +43,13 @@ public class PriceChartPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		priceCoord = new TimeSeriesCoordinate2D();
-		volumnCoord = new TimeSeriesCoordinate2D();
+		priceCoord = new TimeCoordinate2D();
+		volumnCoord = new TimeCoordinate2D();
 		volumnCoord.setTimeAxis(priceCoord.getTimeAxis());
 		priceCoord.getYAxis().setScale(Scale.LOG);
+		plot = new PriceChartPlotter();
+		plot.setPriceCoord(priceCoord);
+		plot.setVolumnCoord(volumnCoord);
 		fitScreen();
 		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
 				"BS6.SI", DateUtils.addDays(new Date(), -300), new Date(),
@@ -82,8 +86,11 @@ public class PriceChartPanel extends JPanel {
 		priceCoord.getYAxis().setValueHigh(priceHigh);
 		volumnCoord.getYAxis().setValueLow(0d);
 		volumnCoord.getYAxis().setValueHigh(volumnHigh);
-		System.out.println(priceCoord);
-		System.out.println(volumnCoord);
+		plot.setPriceList(priceList);
+	}
+
+	public List<EquityPriceBean> getPriceList() {
+		return priceList;
 	}
 
 	private void fitScreen() {
@@ -100,35 +107,12 @@ public class PriceChartPanel extends JPanel {
 
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
-		g.setColor(Color.black);
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		// g.setColor(Color.black);
+		// g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		// priceCoord.showBack(g);
-		priceCoord.paintAxis(g);
 		// volumnCoord.showBack(g);
-		volumnCoord.paintAxis(g);
-		g.setColor(Color.GRAY);
-
-		for (EquityPriceBean price : priceList) {
-			int x0 = priceCoord.getTimeAxis().getScreen(price.getDate());
-			int yo = priceCoord.getYAxis().getScreen(price.getPriceOpen());
-			int yc = priceCoord.getYAxis().getScreen(price.getPriceClose());
-			int yl = priceCoord.getYAxis().getScreen(price.getPriceLow());
-			int yh = priceCoord.getYAxis().getScreen(price.getPriceHigh());
-
-			// paintComponent K line
-			if (price.getPriceClose() > price.getPriceOpen()) {
-				g.setColor(Color.GREEN);
-			} else {
-				g.setColor(Color.RED);
-			}
-			g.fillRect(x0 - 2, Math.min(yo, yc), 5, Math.abs(yo - yc) + 2);
-			g.drawLine(x0, yl, x0, yh);
-
-			// paintComponent volum
-			int yvl = volumnCoord.getYAxis().getScreen(0d);
-			int yvh = volumnCoord.getYAxis().getScreen(price.getVolumn() + 0d);
-			g.fillRect(x0 - 2, yvh, 5, yvl - yvh);
-		}
-		// g.setColor(this.getForeground());
+		plot.paintAxis(g);
+		plot.plotCandles(g);
+		plot.plotVolumn(g);
 	}
 }
