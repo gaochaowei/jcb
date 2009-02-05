@@ -14,7 +14,7 @@ import org.apache.commons.lang.time.DateUtils;
 import com.jcb.bean.EquityPriceBean;
 import com.jcb.chart.geo.TimeCoordinate2D;
 import com.jcb.chart.geo.ValueAxis.Scale;
-import com.jcb.chart.plotter.PriceChartPlotter;
+import com.jcb.chart.plot.PriceChartPlot;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.util.CommonUtils;
@@ -26,7 +26,7 @@ public class PriceChartPanel extends JPanel {
 	private TimeCoordinate2D volumnCoord; // @jve:decl-index=0:
 	private Map<Date, EquityPriceBean> priceMap; // @jve:decl-index=0:
 	private List<EquityPriceBean> priceList;
-	private PriceChartPlotter plot;
+	private PriceChartPlot plot;
 
 	/**
 	 * This is the default constructor
@@ -48,7 +48,7 @@ public class PriceChartPanel extends JPanel {
 		volumnCoord = new TimeCoordinate2D();
 		volumnCoord.setTimeAxis(priceCoord.getTimeAxis());
 		priceCoord.getYAxis().setScale(Scale.LOG);
-		plot = new PriceChartPlotter();
+		plot = new PriceChartPlot();
 		plot.setPriceCoord(priceCoord);
 		plot.setVolumnCoord(volumnCoord);
 		fitScreen();
