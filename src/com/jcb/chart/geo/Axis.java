@@ -16,63 +16,69 @@ public class Axis<E> {
 		HORIZONTAL, VERTICAL
 	};
 
-	protected static final int TICKER_SIZE = 5;
+	private static final int TICKER_SIZE = 5;
 
-	protected Orientation orientation = Orientation.HORIZONTAL;
-	protected int screenLow = 0;
-	protected int screenHigh = 100;
-	protected E valueLow;
-	protected E valueHigh;
-	protected Function<E, Number> converter;
+	private Orientation orientation = Orientation.HORIZONTAL;
+	private int screenLow = 0;
+	private int screenHigh = 100;
+	private E valueLow;
+	private E valueHigh;
+	private Function<E, Number> converter;
 
-	protected double pixelInternalValue;
-	protected double zeroInternalValueScreen;
+	private double pixelInternalValue;
+	private double zeroInternalValueScreen;
+	private String[] numberLabels;
+	private Map<Date, String> dateLabels;
+	private DecimalFormat numberFormat;
 
 	public Axis(Function<E, Number> converter) {
 		this.converter = converter;
 	}
 
-	public void paint(Graphics g, int screen) {
+	public void paint(Graphics g, Axis<?> axis, boolean showGrid) {
 		g.setColor(Color.GRAY);
 		FontMetrics metrics = g.getFontMetrics();
+		int screen;
+		if (orientation == Orientation.HORIZONTAL) {
+			screen = axis.getScreenHigh();
+			g.drawLine(screenLow, screen, screenHigh, screen);
+		} else {
+			screen = axis.getScreenLow();
+			g.drawLine(screen, screenLow, screen, screenHigh);
+		}
+
+		int gridSize = showGrid ? axis.getScreenSize() : TICKER_SIZE;
+
 		if (valueLow instanceof Number) {
-			double doubleLow = (Double) valueLow;
-			double doubleHigh = (Double) valueHigh;
-			String[] labels = AxisUtils.getLabels(doubleLow, doubleHigh);
-			DecimalFormat fmt = AxisUtils.getFormat(AxisUtils
-					.getUnit(doubleHigh - doubleLow));
-			if (orientation == Orientation.HORIZONTAL) {
-				g.drawLine(screenLow, screen, screenHigh, screen);
-				for (String s : labels) {
-					E value = (E) CommonUtils.parse(s, fmt);
+			for (String s : numberLabels) {
+				E value = (E) CommonUtils.parse(s, numberFormat);
+				if (orientation == Orientation.HORIZONTAL) {
 					g.drawString(s, getScreen(value) - metrics.stringWidth(s)
 							/ 2, screen + metrics.getAscent());
+
 					g.drawLine(getScreen(value), screen, getScreen(value),
-							screen - TICKER_SIZE);
-				}
-			} else {
-				g.drawLine(screen, screenLow, screen, screenHigh);
-				for (String s : labels) {
-					E value = (E) CommonUtils.parse(s, fmt);
-					int w0 = metrics.stringWidth(s);
-					g.drawString(s, screen - w0 - 2, getScreen(value)
-							+ metrics.getAscent() / 2);
-					g.drawLine(screen, getScreen(value), screen + TICKER_SIZE,
+							screen - gridSize);
+				} else {
+					g.drawString(s, screen - metrics.stringWidth(s) - 2,
+							getScreen(value) + metrics.getAscent() / 2);
+					g.drawLine(screen, getScreen(value), screen + gridSize,
 							getScreen(value));
 				}
 			}
+
 		} else if (valueLow instanceof Date) {
-			g.drawLine(screenLow, screen, screenHigh, screen);
-			Date dateLow = (Date) valueLow;
-			Date dateHigh = (Date) valueHigh;
-			Map<Date, String> labels = AxisUtils.getLabels(dateLow, dateHigh);
-			for (Date d : labels.keySet()) {
-				E value = (E) d;
-				g.drawString(labels.get(d), getScreen(value)
-						- metrics.stringWidth(labels.get(value)) / 2, screen
-						+ metrics.getAscent());
-				g.drawLine(getScreen(value), screen, getScreen(value),
-						screen - 5);
+			for (Date date : dateLabels.keySet()) {
+				E value = (E) date;
+				g.drawString(dateLabels.get(date), getScreen(value)
+						- metrics.stringWidth(dateLabels.get(value)) / 2,
+						screen + metrics.getAscent());
+				if (showGrid) {
+					g.drawLine(getScreen(value), screen, getScreen(value),
+							screen - axis.getScreenSize());
+				} else {
+					g.drawLine(getScreen(value), screen, getScreen(value),
+							screen - TICKER_SIZE);
+				}
 			}
 		}
 	}
@@ -94,6 +100,17 @@ public class Axis<E> {
 				zeroInternalValueScreen = screenHigh
 						+ converter.computer(valueLow).doubleValue()
 						/ pixelInternalValue;
+			}
+			if (valueLow instanceof Number) {
+				double doubleLow = ((Number) valueLow).doubleValue();
+				double doubleHigh = ((Number) valueHigh).doubleValue();
+				numberLabels = AxisUtils.getLabels((Number) valueLow,
+						(Number) valueHigh);
+				numberFormat = AxisUtils.getFormat(AxisUtils.getUnit(doubleHigh
+						- doubleLow));
+			} else if (valueLow instanceof Date) {
+				dateLabels = AxisUtils.getLabels((Date) valueLow,
+						(Date) valueHigh);
 			}
 		}
 	}

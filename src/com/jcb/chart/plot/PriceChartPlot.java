@@ -42,8 +42,8 @@ public class PriceChartPlot {
 	}
 
 	public void paintAxis(Graphics g) {
-		priceCoord.paintAxis(g);
-		volumnCoord.paintAxis(g);
+		priceCoord.paintAxis(g, false, true);
+		volumnCoord.paintAxis(g, false, true);
 	}
 
 	public void plotCandles(Graphics g) {

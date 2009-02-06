@@ -50,7 +50,7 @@ public class RealPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(Color.BLACK);
-		cd.paintAxis(g);
+		cd.paintAxis(g, false, false);
 	}
 
 }
