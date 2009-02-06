@@ -11,6 +11,25 @@ public class Coordinate<X, Y> {
 	private Axis<X> xAxis;
 	private Axis<Y> yAxis;
 
+	private boolean xGridVisible = false;
+	private boolean yGridVisible = false;
+
+	public boolean isXGridVisible() {
+		return xGridVisible;
+	}
+
+	public void setXGridVisible(boolean gridVisible) {
+		xGridVisible = gridVisible;
+	}
+
+	public boolean isYGridVisible() {
+		return yGridVisible;
+	}
+
+	public void setYGridVisible(boolean gridVisible) {
+		yGridVisible = gridVisible;
+	}
+
 	public Coordinate(Function<X, Number> xc, Function<Y, Number> yc) {
 		xAxis = new Axis<X>(xc);
 		yAxis = new Axis<Y>(yc);
@@ -44,9 +63,9 @@ public class Coordinate<X, Y> {
 		}
 	}
 
-	public void paintAxis(Graphics g) {
-		xAxis.paint(g, yAxis.getScreenHigh());
-		yAxis.paint(g, xAxis.getScreenLow());
+	public void paintAxis(Graphics g, boolean showXGrid, boolean showYGrid) {
+		xAxis.paint(g, yAxis, showXGrid);
+		yAxis.paint(g, xAxis, showYGrid);
 	}
 
 	public String toString() {

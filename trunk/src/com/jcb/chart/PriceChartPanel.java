@@ -24,11 +24,11 @@ import com.jcb.util.CommonUtils;
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Coordinate<Date, Number> pcd; // @jve:decl-index=0:
+	private Coordinate<Date, Number> pcd;
 	private Coordinate<Date, Number> vcd;
 	private Map<Date, EquityPriceBean> priceMap;
-	private List<EquityPriceBean> priceList; // @jve:decl-index=0:
-	private SimpleRegression regression; // @jve:decl-index=0:
+	private List<EquityPriceBean> priceList;
+	private SimpleRegression regression;
 	private PriceChartPlot plot;
 
 	/**
@@ -88,6 +88,9 @@ public class PriceChartPanel extends JPanel {
 			volumnHigh = Math.max(volumnHigh, price.getVolumn());
 
 		}
+		dateLow = DateUtils.addWeeks(dateLow, -1);
+		dateHigh = DateUtils.addWeeks(dateHigh, 1);
+
 		pcd.setValueRange(dateLow, dateHigh, priceLow, priceHigh);
 		vcd.setValueRange(dateLow, dateHigh, 0d, volumnHigh);
 		plot.setPriceList(priceList);

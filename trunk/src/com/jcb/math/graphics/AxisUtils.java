@@ -1,5 +1,6 @@
 package com.jcb.math.graphics;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,11 +14,11 @@ import com.jcb.util.CommonUtils;
 
 public class AxisUtils {
 
-	public static String[] getLabels(double min, double max) {
-		double unit = AxisUtils.getUnit(max - min);
+	public static String[] getLabels(Number min, Number max) {
+		double unit = AxisUtils.getUnit(max.doubleValue() - min.doubleValue());
 		DecimalFormat format = AxisUtils.getFormat(unit);
-		int low = (int) Math.ceil(min / unit);
-		int high = (int) Math.floor(max / unit);
+		int low = (int) Math.ceil(min.doubleValue() / unit);
+		int high = (int) Math.floor(max.doubleValue() / unit);
 		String[] cals = new String[high - low + 1];
 		for (int i = 0; i < cals.length; i++) {
 			String label = format.format((low + i) * unit);
@@ -26,11 +27,11 @@ public class AxisUtils {
 		return cals;
 	}
 
-	public static double getUnit(double length) {
+	public static double getUnit(Number length) {
 		double unit = 1d;
 		double t = 0;
 		while (true) {
-			t = length / unit;
+			t = length.doubleValue() / unit;
 			if (t < 1) {
 				unit = unit / 10;
 			} else if (t >= 10) {
@@ -51,9 +52,9 @@ public class AxisUtils {
 		return unit;
 	}
 
-	public static DecimalFormat getFormat(double unit) {
+	public static DecimalFormat getFormat(Number unit) {
 		DecimalFormat format = new DecimalFormat();
-		String s = String.valueOf(unit);
+		String s = new BigDecimal(unit.toString()).toPlainString();
 		format.setGroupingSize(3);
 		int fractionSize = 0;
 		if (s.indexOf('.') >= 0 && !s.endsWith(".0")) {
