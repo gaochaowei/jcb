@@ -9,12 +9,12 @@ import com.jcb.chart.geo.Function;
 
 public class Regression {
 
-	public static SimpleRegression regression(List<EquityPriceBean> priceList,
-			Function<Double, Double> convertor) {
+	public static SimpleRegression regress(List<EquityPriceBean> priceList,
+			Function<Number, Number> convertor) {
 		SimpleRegression reg = new SimpleRegression();
 		for (EquityPriceBean price : priceList) {
-			reg.addData(price.getDate().getTime(), convertor.computer(price
-					.getPriceLow()));
+			reg.addData(price.getDate().getTime(), convertor.computer(
+					price.getPriceLow()).doubleValue());
 		}
 		return reg;
 	}

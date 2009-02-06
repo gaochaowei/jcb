@@ -13,23 +13,23 @@ import com.jcb.math.expression.Expression;
 
 public class PriceChartPlot {
 
-	private Coordinate<Date, Double> priceCoord;
-	private Coordinate<Date, Double> volumnCoord;
+	private Coordinate<Date, Number> priceCoord;
+	private Coordinate<Date, Number> volumnCoord;
 	private List<EquityPriceBean> priceList;
 
-	public Coordinate<Date, Double> getPriceCoord() {
+	public Coordinate<Date, Number> getPriceCoord() {
 		return priceCoord;
 	}
 
-	public void setPriceCoord(Coordinate<Date, Double> priceCoord) {
+	public void setPriceCoord(Coordinate<Date, Number> priceCoord) {
 		this.priceCoord = priceCoord;
 	}
 
-	public Coordinate<Date, Double> getVolumnCoord() {
+	public Coordinate<Date, Number> getVolumnCoord() {
 		return volumnCoord;
 	}
 
-	public void setVolumnCoord(Coordinate<Date, Double> volumnCoord) {
+	public void setVolumnCoord(Coordinate<Date, Number> volumnCoord) {
 		this.volumnCoord = volumnCoord;
 	}
 
@@ -83,10 +83,10 @@ public class PriceChartPlot {
 		for (int x = screenLow + 1; x <= screenHigh; x++) {
 			double time0 = priceCoord.getXValue(x - 1).getTime();
 			double time1 = priceCoord.getXValue(x).getTime();
-			double yv0 = priceCoord.getYConverter()
-					.computer(exp.compute(time0));
-			double yv1 = priceCoord.getYConverter()
-					.computer(exp.compute(time1));
+			double yv0 = priceCoord.getYConverter().solve(exp.compute(time0))
+					.doubleValue();
+			double yv1 = priceCoord.getYConverter().solve(exp.compute(time1))
+					.doubleValue();
 			int y0 = priceCoord.getYScreen(yv0);
 			int y1 = priceCoord.getYScreen(yv1);
 			if (priceCoord.containYScreen(y0) && priceCoord.containYScreen(y1)) {

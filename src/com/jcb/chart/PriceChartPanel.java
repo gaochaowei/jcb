@@ -24,11 +24,11 @@ import com.jcb.util.CommonUtils;
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Coordinate<Date, Double> pcd;
-	private Coordinate<Date, Double> vcd;
+	private Coordinate<Date, Number> pcd; // @jve:decl-index=0:
+	private Coordinate<Date, Number> vcd;
 	private Map<Date, EquityPriceBean> priceMap;
-	private List<EquityPriceBean> priceList;
-	private SimpleRegression regression;
+	private List<EquityPriceBean> priceList; // @jve:decl-index=0:
+	private SimpleRegression regression; // @jve:decl-index=0:
 	private PriceChartPlot plot;
 
 	/**
@@ -47,19 +47,25 @@ public class PriceChartPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		pcd = new Coordinate<Date, Double>(Function.SIMPLE_DATE, Function.NONE);
-		vcd = new Coordinate<Date, Double>(Function.SIMPLE_DATE, Function.NONE);
+		pcd = new Coordinate<Date, Number>(Function.SIMPLE_DATE, Function.LOG);
+		vcd = new Coordinate<Date, Number>(Function.SIMPLE_DATE, Function.NONE);
 		plot = new PriceChartPlot();
 		plot.setPriceCoord(pcd);
 		plot.setVolumnCoord(vcd);
 		fitScreen();
 		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
-				"BS6.SI", DateUtils.addDays(new Date(), -300), new Date(),
+				"BS6.SI", DateUtils.addDays(new Date(), -1000), new Date(),
 				Frequency.WEEK);
 		setPriceList(priceList);
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent e) {
 				fitScreen();
+				repaint();
+			}
+		});
+		this.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+			public void mouseMoved(java.awt.event.MouseEvent e) {
+				x = e.getX();
 				repaint();
 			}
 		});
@@ -85,7 +91,7 @@ public class PriceChartPanel extends JPanel {
 		pcd.setValueRange(dateLow, dateHigh, priceLow, priceHigh);
 		vcd.setValueRange(dateLow, dateHigh, 0d, volumnHigh);
 		plot.setPriceList(priceList);
-		regression = Regression.regression(priceList, pcd.getYConverter());
+		regression = Regression.regress(priceList, pcd.getYConverter());
 	}
 
 	public List<EquityPriceBean> getPriceList() {
@@ -99,12 +105,19 @@ public class PriceChartPanel extends JPanel {
 		vcd.setScreenRange(100, width - 50, height - 180, height - 50);
 	}
 
+	private void paintLine(Graphics g, int x) {
+		g.drawLine(x, 0, x, getHeight());
+	}
+
+	int x = 0;
+
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		plot.paintAxis(g);
 		plot.plotCandles(g);
 		plot.plotVolumn(g);
 		plot.plotTrend(g, regression);
+		paintLine(g, x);
 	}
 
 }
