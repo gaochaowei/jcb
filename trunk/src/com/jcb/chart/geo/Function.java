@@ -7,23 +7,33 @@ public interface Function<E, T> {
 
 	public E solve(T y);
 
-	public Function<Double, Double> NONE = new Function<Double, Double>() {
-		public Double computer(Double x) {
+	public Function<Number, Number> NONE = new Function<Number, Number>() {
+		public Number computer(Number x) {
 			return x;
 		}
 
-		public Double solve(Double y) {
+		public Number solve(Number y) {
 			return y;
 		}
 	};
 
-	public Function<Date, Double> SIMPLE_DATE = new Function<Date, Double>() {
-		public Double computer(Date x) {
-			return (double) x.getTime();
+	public Function<Number, Number> LOG = new Function<Number, Number>() {
+		public Number computer(Number x) {
+			return Math.log(x.doubleValue());
 		}
 
-		public Date solve(Double y) {
-			return new Date(Math.round(y));
+		public Number solve(Number y) {
+			return Math.exp(y.doubleValue());
+		}
+	};
+
+	public Function<Date, Number> SIMPLE_DATE = new Function<Date, Number>() {
+		public Number computer(Date x) {
+			return x.getTime();
+		}
+
+		public Date solve(Number y) {
+			return new Date(Math.round(y.doubleValue()));
 		}
 	};
 

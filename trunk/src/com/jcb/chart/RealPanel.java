@@ -12,7 +12,7 @@ import com.jcb.chart.geo.Function;
 public class RealPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Coordinate<Double, Double> cd;
+	private Coordinate<Number, Number> cd;
 
 	/**
 	 * This is the default constructor
@@ -30,7 +30,7 @@ public class RealPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		cd = new Coordinate<Double, Double>(Function.NONE, Function.NONE);
+		cd = new Coordinate<Number, Number>(Function.NONE, Function.NONE);
 		fitScreen();
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent e) {

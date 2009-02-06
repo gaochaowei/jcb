@@ -23,19 +23,19 @@ public class Axis<E> {
 	protected int screenHigh = 100;
 	protected E valueLow;
 	protected E valueHigh;
-	protected Function<E, Double> converter;
+	protected Function<E, Number> converter;
 
 	protected double pixelInternalValue;
 	protected double zeroInternalValueScreen;
 
-	public Axis(Function<E, Double> converter) {
+	public Axis(Function<E, Number> converter) {
 		this.converter = converter;
 	}
 
 	public void paint(Graphics g, int screen) {
 		g.setColor(Color.GRAY);
 		FontMetrics metrics = g.getFontMetrics();
-		if (valueLow instanceof Double) {
+		if (valueLow instanceof Number) {
 			double doubleLow = (Double) valueLow;
 			double doubleHigh = (Double) valueHigh;
 			String[] labels = AxisUtils.getLabels(doubleLow, doubleHigh);
@@ -44,8 +44,7 @@ public class Axis<E> {
 			if (orientation == Orientation.HORIZONTAL) {
 				g.drawLine(screenLow, screen, screenHigh, screen);
 				for (String s : labels) {
-					E value = (E) (Number) CommonUtils.parse(s, fmt)
-							.doubleValue();
+					E value = (E) CommonUtils.parse(s, fmt);
 					g.drawString(s, getScreen(value) - metrics.stringWidth(s)
 							/ 2, screen + metrics.getAscent());
 					g.drawLine(getScreen(value), screen, getScreen(value),
@@ -54,8 +53,7 @@ public class Axis<E> {
 			} else {
 				g.drawLine(screen, screenLow, screen, screenHigh);
 				for (String s : labels) {
-					E value = (E) (Number) CommonUtils.parse(s, fmt)
-							.doubleValue();
+					E value = (E) CommonUtils.parse(s, fmt);
 					int w0 = metrics.stringWidth(s);
 					g.drawString(s, screen - w0 - 2, getScreen(value)
 							+ metrics.getAscent() / 2);
@@ -85,14 +83,17 @@ public class Axis<E> {
 	private void preCompute() {
 		if (isReady()) {
 			double internalValueSize = converter.computer(valueHigh)
-					- converter.computer(valueLow);
+					.doubleValue()
+					- converter.computer(valueLow).doubleValue();
 			pixelInternalValue = internalValueSize / getScreenSize();
 			if (orientation == Orientation.HORIZONTAL) {
 				zeroInternalValueScreen = screenLow
-						- converter.computer(valueLow) / pixelInternalValue;
+						- converter.computer(valueLow).doubleValue()
+						/ pixelInternalValue;
 			} else {
 				zeroInternalValueScreen = screenHigh
-						+ converter.computer(valueLow) / pixelInternalValue;
+						+ converter.computer(valueLow).doubleValue()
+						/ pixelInternalValue;
 			}
 		}
 	}
@@ -117,7 +118,7 @@ public class Axis<E> {
 	}
 
 	public int getScreen(E value) {
-		double internalValue = converter.computer(value);
+		double internalValue = converter.computer(value).doubleValue();
 		switch (orientation) {
 		case HORIZONTAL:
 			return (int) Math.round(zeroInternalValueScreen + internalValue
@@ -177,11 +178,11 @@ public class Axis<E> {
 		preCompute();
 	}
 
-	public Function<E, Double> getConverter() {
+	public Function<E, Number> getConverter() {
 		return converter;
 	}
 
-	public void setConverter(Function<E, Double> converter) {
+	public void setConverter(Function<E, Number> converter) {
 		this.converter = converter;
 		preCompute();
 	}

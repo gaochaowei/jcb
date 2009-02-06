@@ -11,7 +11,7 @@ public class Coordinate<X, Y> {
 	private Axis<X> xAxis;
 	private Axis<Y> yAxis;
 
-	public Coordinate(Function<X, Double> xc, Function<Y, Double> yc) {
+	public Coordinate(Function<X, Number> xc, Function<Y, Number> yc) {
 		xAxis = new Axis<X>(xc);
 		yAxis = new Axis<Y>(yc);
 		yAxis.setOrientation(Orientation.VERTICAL);
@@ -53,7 +53,7 @@ public class Coordinate<X, Y> {
 		return CommonUtils.getBeanValue(this);
 	}
 
-	public void setConverter(Function<X, Double> xc, Function<Y, Double> yc) {
+	public void setConverter(Function<X, Number> xc, Function<Y, Number> yc) {
 		xAxis.setConverter(xc);
 		yAxis.setConverter(yc);
 	}
@@ -72,11 +72,11 @@ public class Coordinate<X, Y> {
 		yAxis.setValueHigh(yHigh);
 	}
 
-	public Function<X, Double> getXConverter() {
+	public Function<X, Number> getXConverter() {
 		return xAxis.getConverter();
 	}
 
-	public Function<Y, Double> getYConverter() {
+	public Function<Y, Number> getYConverter() {
 		return yAxis.getConverter();
 	}
 
