@@ -1,4 +1,4 @@
-package com.jcb.gui;
+package com.jcb.view;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
