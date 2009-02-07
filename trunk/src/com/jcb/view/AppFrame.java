@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jcb.gui;
+package com.jcb.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
