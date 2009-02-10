@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import com.jcb.chart.geo.Axis.Orientation;
 import com.jcb.util.CommonUtils;
 
-public class Coordinate<X, Y> {
+public class Space2D<X, Y> {
 
 	private Axis<X> xAxis;
 	private Axis<Y> yAxis;
@@ -30,7 +30,7 @@ public class Coordinate<X, Y> {
 		yGridVisible = gridVisible;
 	}
 
-	public Coordinate(Function<X, Number> xc, Function<Y, Number> yc) {
+	public Space2D(Function<X, Number> xc, Function<Y, Number> yc) {
 		xAxis = new Axis<X>(xc);
 		yAxis = new Axis<Y>(yc);
 		yAxis.setOrientation(Orientation.VERTICAL);

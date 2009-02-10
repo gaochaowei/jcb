@@ -13,8 +13,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.geo.Coordinate;
 import com.jcb.chart.geo.Function;
+import com.jcb.chart.geo.Space2D;
 import com.jcb.chart.plot.PriceChartPlot;
 import com.jcb.io.EquityReader;
 import com.jcb.io.EquityReader.Frequency;
@@ -24,8 +24,8 @@ import com.jcb.util.CommonUtils;
 public class PriceChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Coordinate<Date, Number> pcd;
-	private Coordinate<Date, Number> vcd;
+	private Space2D<Date, Number> priceSpace; // @jve:decl-index=0:
+	private Space2D<Date, Number> volumSpace; // @jve:decl-index=0:
 	private Map<Date, EquityPriceBean> priceMap;
 	private List<EquityPriceBean> priceList;
 	private SimpleRegression regression;
@@ -47,11 +47,13 @@ public class PriceChartPanel extends JPanel {
 	private void initialize() {
 		this.setSize(600, 300);
 		this.setLayout(new BorderLayout());
-		pcd = new Coordinate<Date, Number>(Function.SIMPLE_DATE, Function.LOG);
-		vcd = new Coordinate<Date, Number>(Function.SIMPLE_DATE, Function.NONE);
+		priceSpace = new Space2D<Date, Number>(Function.SIMPLE_DATE,
+				Function.LOG);
+		volumSpace = new Space2D<Date, Number>(Function.SIMPLE_DATE,
+				Function.NONE);
 		plot = new PriceChartPlot();
-		plot.setPriceCoord(pcd);
-		plot.setVolumnCoord(vcd);
+		plot.setPriceCoord(priceSpace);
+		plot.setVolumnCoord(volumSpace);
 		fitScreen();
 		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
 				"BS6.SI", DateUtils.addDays(new Date(), -1000), new Date(),
@@ -91,10 +93,10 @@ public class PriceChartPanel extends JPanel {
 		dateLow = DateUtils.addWeeks(dateLow, -1);
 		dateHigh = DateUtils.addWeeks(dateHigh, 1);
 
-		pcd.setValueRange(dateLow, dateHigh, priceLow, priceHigh);
-		vcd.setValueRange(dateLow, dateHigh, 0d, volumnHigh);
+		priceSpace.setValueRange(dateLow, dateHigh, priceLow, priceHigh);
+		volumSpace.setValueRange(dateLow, dateHigh, 0d, volumnHigh);
 		plot.setPriceList(priceList);
-		regression = Regression.regress(priceList, pcd.getYConverter());
+		regression = Regression.regress(priceList, priceSpace.getYConverter());
 	}
 
 	public List<EquityPriceBean> getPriceList() {
@@ -104,8 +106,8 @@ public class PriceChartPanel extends JPanel {
 	private void fitScreen() {
 		int width = this.getWidth();
 		int height = this.getHeight();
-		pcd.setScreenRange(100, width - 50, 50, height - 200);
-		vcd.setScreenRange(100, width - 50, height - 180, height - 50);
+		priceSpace.setScreenRange(100, width - 50, 50, height - 200);
+		volumSpace.setScreenRange(100, width - 50, height - 180, height - 50);
 	}
 
 	private void paintLine(Graphics g, int x) {
