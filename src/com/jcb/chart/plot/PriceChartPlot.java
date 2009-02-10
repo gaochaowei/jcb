@@ -8,28 +8,28 @@ import java.util.List;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.chart.geo.Coordinate;
+import com.jcb.chart.geo.Space2D;
 import com.jcb.math.expression.Expression;
 
 public class PriceChartPlot {
 
-	private Coordinate<Date, Number> priceCoord;
-	private Coordinate<Date, Number> volumnCoord;
+	private Space2D<Date, Number> priceCoord;
+	private Space2D<Date, Number> volumnCoord;
 	private List<EquityPriceBean> priceList;
 
-	public Coordinate<Date, Number> getPriceCoord() {
+	public Space2D<Date, Number> getPriceCoord() {
 		return priceCoord;
 	}
 
-	public void setPriceCoord(Coordinate<Date, Number> priceCoord) {
+	public void setPriceCoord(Space2D<Date, Number> priceCoord) {
 		this.priceCoord = priceCoord;
 	}
 
-	public Coordinate<Date, Number> getVolumnCoord() {
+	public Space2D<Date, Number> getVolumnCoord() {
 		return volumnCoord;
 	}
 
-	public void setVolumnCoord(Coordinate<Date, Number> volumnCoord) {
+	public void setVolumnCoord(Space2D<Date, Number> volumnCoord) {
 		this.volumnCoord = volumnCoord;
 	}
 

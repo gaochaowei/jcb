@@ -8,9 +8,9 @@ public class EquityIndexBean extends EquityBean {
 	private static final long serialVersionUID = 8884436307464785223L;
 
 	public enum IndexWeight {
-		PriceWeighted, MarketCapsWeighted,FloatAdjustedWeighted,ModifiedMarketCapsWeighted
+		PriceWeighted, MarketCapsWeighted, FloatAdjustedWeighted, ModifiedMarketCapsWeighted
 	};
-	
+
 	private List<EquityBean> components = new ArrayList<EquityBean>();
 
 	public List<EquityBean> getComponents() {
@@ -20,5 +20,5 @@ public class EquityIndexBean extends EquityBean {
 	public void setComponents(List<EquityBean> components) {
 		this.components = components;
 	}
-	
+
 }
