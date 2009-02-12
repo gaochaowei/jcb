@@ -421,11 +421,13 @@ public class JacobApp {
 	private JCheckBoxMenuItem getJCheckBoxMenuItem() {
 		if (jCheckBoxMenuItem == null) {
 			jCheckBoxMenuItem = new JCheckBoxMenuItem();
+			jCheckBoxMenuItem.setText("Linear");
 			jCheckBoxMenuItem
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							getPriceChartPanel().setPriceConverter(
 									Function.NONE);
+							getJCheckBoxMenuItem1().setSelected(false);
 						}
 					});
 		}
@@ -440,11 +442,13 @@ public class JacobApp {
 	private JCheckBoxMenuItem getJCheckBoxMenuItem1() {
 		if (jCheckBoxMenuItem1 == null) {
 			jCheckBoxMenuItem1 = new JCheckBoxMenuItem();
+			jCheckBoxMenuItem1.setText("Log");
 			jCheckBoxMenuItem1
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							getPriceChartPanel()
 									.setPriceConverter(Function.LOG);
+							getJCheckBoxMenuItem().setSelected(false);
 						}
 					});
 		}
