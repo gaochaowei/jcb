@@ -125,4 +125,8 @@ public class PriceChartPanel extends JPanel {
 		paintLine(g, x);
 	}
 
+	public void setPriceConverter(Function<Number, Number> converter) {
+		priceSpace.getYAxis().setConverter(converter);
+		repaint();
+	}
 }
