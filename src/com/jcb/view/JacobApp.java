@@ -17,10 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import java.awt.Dimension;
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.JTabbedPane;
+import com.jcb.chart.PriceChartPanel;
 
 public class JacobApp {
 
-	private JFrame jFrame = null;
+	private JFrame jFrame = null;  //  @jve:decl-index=0:visual-constraint="10,10"
 	private JPanel jContentPane = null;
 	private JMenuBar jJMenuBar = null;
 	private JMenu fileMenu = null;
@@ -32,12 +37,16 @@ public class JacobApp {
 	private JMenuItem copyMenuItem = null;
 	private JMenuItem pasteMenuItem = null;
 	private JMenuItem saveMenuItem = null;
-	private JDialog aboutDialog = null;
+	private JDialog aboutDialog = null;  //  @jve:decl-index=0:visual-constraint="13,415"
 	private JPanel aboutContentPane = null;
 	private JLabel aboutVersionLabel = null;
 	private JMenu dataMenu = null;
 	private JMenuItem importMenuItem = null;
 	private JMenuItem editMenuItem = null;
+	private JToolBar jToolBar = null;
+	private JButton jButton = null;
+	private JTabbedPane jTabbedPane = null;
+	private PriceChartPanel priceChartPanel = null;
 
 	/**
 	 * This method initializes jFrame
@@ -49,9 +58,10 @@ public class JacobApp {
 			jFrame = new JFrame();
 			jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jFrame.setJMenuBar(getJJMenuBar());
-			jFrame.setSize(300, 200);
+			jFrame.setSize(613, 388);
 			jFrame.setContentPane(getJContentPane());
 			jFrame.setTitle("Application");
+			jFrame.setExtendedState(jFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		}
 		return jFrame;
 	}
@@ -65,6 +75,8 @@ public class JacobApp {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
+			jContentPane.add(getJToolBar(), BorderLayout.NORTH);
+			jContentPane.add(getJTabbedPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
@@ -312,6 +324,56 @@ public class JacobApp {
 			editMenuItem.setText("Edit");
 		}
 		return editMenuItem;
+	}
+
+	/**
+	 * This method initializes jToolBar	
+	 * 	
+	 * @return javax.swing.JToolBar	
+	 */
+	private JToolBar getJToolBar() {
+		if (jToolBar == null) {
+			jToolBar = new JToolBar();
+			jToolBar.add(getJButton());
+		}
+		return jToolBar;
+	}
+
+	/**
+	 * This method initializes jButton	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getJButton() {
+		if (jButton == null) {
+			jButton = new JButton();
+		}
+		return jButton;
+	}
+
+	/**
+	 * This method initializes jTabbedPane	
+	 * 	
+	 * @return javax.swing.JTabbedPane	
+	 */
+	private JTabbedPane getJTabbedPane() {
+		if (jTabbedPane == null) {
+			jTabbedPane = new JTabbedPane();
+			jTabbedPane.addTab(null, null, getPriceChartPanel(), null);
+		}
+		return jTabbedPane;
+	}
+
+	/**
+	 * This method initializes priceChartPanel	
+	 * 	
+	 * @return com.jcb.chart.PriceChartPanel	
+	 */
+	private PriceChartPanel getPriceChartPanel() {
+		if (priceChartPanel == null) {
+			priceChartPanel = new PriceChartPanel();
+		}
+		return priceChartPanel;
 	}
 
 	/**
