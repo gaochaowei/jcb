@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,18 +16,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import java.awt.Dimension;
-import javax.swing.JToolBar;
-import javax.swing.JButton;
-import javax.swing.JTabbedPane;
+
 import com.jcb.chart.PriceChartPanel;
+import com.jcb.chart.geo.Function;
 
 public class JacobApp {
 
-	private JFrame jFrame = null;  //  @jve:decl-index=0:visual-constraint="10,10"
+	private JFrame jFrame = null; // @jve:decl-index=0:visual-constraint="10,10"
 	private JPanel jContentPane = null;
 	private JMenuBar jJMenuBar = null;
 	private JMenu fileMenu = null;
@@ -37,7 +39,7 @@ public class JacobApp {
 	private JMenuItem copyMenuItem = null;
 	private JMenuItem pasteMenuItem = null;
 	private JMenuItem saveMenuItem = null;
-	private JDialog aboutDialog = null;  //  @jve:decl-index=0:visual-constraint="13,415"
+	private JDialog aboutDialog = null; // @jve:decl-index=0:visual-constraint="13,415"
 	private JPanel aboutContentPane = null;
 	private JLabel aboutVersionLabel = null;
 	private JMenu dataMenu = null;
@@ -47,6 +49,10 @@ public class JacobApp {
 	private JButton jButton = null;
 	private JTabbedPane jTabbedPane = null;
 	private PriceChartPanel priceChartPanel = null;
+	private JMenu jMenu = null;
+	private JMenu jMenu1 = null;
+	private JCheckBoxMenuItem jCheckBoxMenuItem = null;
+	private JCheckBoxMenuItem jCheckBoxMenuItem1 = null;
 
 	/**
 	 * This method initializes jFrame
@@ -61,7 +67,8 @@ public class JacobApp {
 			jFrame.setSize(613, 388);
 			jFrame.setContentPane(getJContentPane());
 			jFrame.setTitle("Application");
-			jFrame.setExtendedState(jFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+			jFrame.setExtendedState(jFrame.getExtendedState()
+					| JFrame.MAXIMIZED_BOTH);
 		}
 		return jFrame;
 	}
@@ -91,6 +98,7 @@ public class JacobApp {
 			jJMenuBar = new JMenuBar();
 			jJMenuBar.add(getFileMenu());
 			jJMenuBar.add(getEditMenu());
+			jJMenuBar.add(getJMenu());
 			jJMenuBar.add(getDataMenu());
 			jJMenuBar.add(getHelpMenu());
 		}
@@ -327,9 +335,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jToolBar	
-	 * 	
-	 * @return javax.swing.JToolBar	
+	 * This method initializes jToolBar
+	 * 
+	 * @return javax.swing.JToolBar
 	 */
 	private JToolBar getJToolBar() {
 		if (jToolBar == null) {
@@ -340,9 +348,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jButton	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButton
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButton() {
 		if (jButton == null) {
@@ -352,9 +360,9 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes jTabbedPane	
-	 * 	
-	 * @return javax.swing.JTabbedPane	
+	 * This method initializes jTabbedPane
+	 * 
+	 * @return javax.swing.JTabbedPane
 	 */
 	private JTabbedPane getJTabbedPane() {
 		if (jTabbedPane == null) {
@@ -365,15 +373,82 @@ public class JacobApp {
 	}
 
 	/**
-	 * This method initializes priceChartPanel	
-	 * 	
-	 * @return com.jcb.chart.PriceChartPanel	
+	 * This method initializes priceChartPanel
+	 * 
+	 * @return com.jcb.chart.PriceChartPanel
 	 */
 	private PriceChartPanel getPriceChartPanel() {
 		if (priceChartPanel == null) {
 			priceChartPanel = new PriceChartPanel();
 		}
 		return priceChartPanel;
+	}
+
+	/**
+	 * This method initializes jMenu
+	 * 
+	 * @return javax.swing.JMenu
+	 */
+	private JMenu getJMenu() {
+		if (jMenu == null) {
+			jMenu = new JMenu();
+			jMenu.setText("Chart");
+			jMenu.add(getJMenu1());
+		}
+		return jMenu;
+	}
+
+	/**
+	 * This method initializes jMenu1
+	 * 
+	 * @return javax.swing.JMenu
+	 */
+	private JMenu getJMenu1() {
+		if (jMenu1 == null) {
+			jMenu1 = new JMenu();
+			jMenu1.setText("Scale");
+			jMenu1.add(getJCheckBoxMenuItem());
+			jMenu1.add(getJCheckBoxMenuItem1());
+		}
+		return jMenu1;
+	}
+
+	/**
+	 * This method initializes jCheckBoxMenuItem
+	 * 
+	 * @return javax.swing.JCheckBoxMenuItem
+	 */
+	private JCheckBoxMenuItem getJCheckBoxMenuItem() {
+		if (jCheckBoxMenuItem == null) {
+			jCheckBoxMenuItem = new JCheckBoxMenuItem();
+			jCheckBoxMenuItem
+					.addActionListener(new java.awt.event.ActionListener() {
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getPriceChartPanel().setPriceConverter(
+									Function.NONE);
+						}
+					});
+		}
+		return jCheckBoxMenuItem;
+	}
+
+	/**
+	 * This method initializes jCheckBoxMenuItem1
+	 * 
+	 * @return javax.swing.JCheckBoxMenuItem
+	 */
+	private JCheckBoxMenuItem getJCheckBoxMenuItem1() {
+		if (jCheckBoxMenuItem1 == null) {
+			jCheckBoxMenuItem1 = new JCheckBoxMenuItem();
+			jCheckBoxMenuItem1
+					.addActionListener(new java.awt.event.ActionListener() {
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getPriceChartPanel()
+									.setPriceConverter(Function.LOG);
+						}
+					});
+		}
+		return jCheckBoxMenuItem1;
 	}
 
 	/**

@@ -134,4 +134,21 @@ public class Space2D<X, Y> {
 	public boolean containYScreen(int screen) {
 		return yAxis.containScreen(screen);
 	}
+
+	public Axis<X> getXAxis() {
+		return xAxis;
+	}
+
+	public void setXAxis(Axis<X> axis) {
+		xAxis = axis;
+	}
+
+	public Axis<Y> getYAxis() {
+		return yAxis;
+	}
+
+	public void setYAxis(Axis<Y> axis) {
+		yAxis = axis;
+	}
+
 }
