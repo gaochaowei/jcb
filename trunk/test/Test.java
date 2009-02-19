@@ -5,13 +5,20 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
+import com.jcb.bean.HDBResaleBean;
+import com.jcb.dao.HDBResaleDAO;
 import com.jcb.io.EquityReader;
+import com.jcb.io.HDBResaleReader;
 import com.jcb.io.EquityReader.Frequency;
 import com.jcb.math.graphics.AxisUtils;
 import com.jcb.util.CommonUtils;
 
 public class Test {
 	public static void main(String[] args) {
+		List<HDBResaleBean> resales = HDBResaleReader.fetchResales(2);
+		HDBResaleDAO.save(resales);
+		System.out.println(resales.size());
+		System.exit(0);
 		DecimalFormat fmt = AxisUtils.getFormat(0.23);
 		System.out.println(fmt.format(1203.5));
 		System.out.println(AxisUtils.getUnit(1203.5));
