@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import com.jcb.util.GuiUtils;
 import com.jcb.util.ImageUtils;
 
 /**
