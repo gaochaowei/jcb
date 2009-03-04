@@ -30,6 +30,7 @@ public class AppFrame extends JFrame implements ActionListener {
 		setIconImage(ImageUtils.readImage("money.gif"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenuBar();
+		setExtendedState(getExtendedState()|JFrame.MAXIMIZED_BOTH);
 	}
 
 	private void makeMenuBar() {
@@ -80,8 +81,6 @@ public class AppFrame extends JFrame implements ActionListener {
 						.toString());
 			}
 			SwingUtilities.updateComponentTreeUI(this);
-			this.pack();
-			GuiUtils.maximize(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
