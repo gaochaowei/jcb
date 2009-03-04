@@ -6,7 +6,11 @@ import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
 import com.jcb.bean.HDBResaleBean;
+import com.jcb.bean.HDBTownBean;
+import com.jcb.bean.HDBTypeBean;
 import com.jcb.dao.HDBResaleDAO;
+import com.jcb.dao.HDBTownDAO;
+import com.jcb.dao.HDBTypeDAO;
 import com.jcb.io.EquityReader;
 import com.jcb.io.HDBResaleReader;
 import com.jcb.io.EquityReader.Frequency;
@@ -27,5 +31,15 @@ public class Test {
 		List<EquityPriceBean> pxs = EquityReader.fetchEquityPrice("c6L.SI",
 				DateUtils.addDays(new Date(), -20), new Date(), Frequency.DATE);
 		System.out.println(pxs);
+	}
+	
+	public static void median(){
+//		List<HDBTownBean> towns = HDBTownDAO.selectHDBTowns();
+//		List<HDBTypeBean> hdbTypes = HDBTypeDAO.selectHDBTypes();
+//		for (HDBTownBean town : towns) {
+//			for (HDBTypeBean hdbType : hdbTypes) {
+//
+//			}
+//		}
 	}
 }
