@@ -1,8 +1,9 @@
 package com.jcb.view;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import java.awt.Component;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 public class JacobFrame extends JFrame {
@@ -30,6 +31,9 @@ public class JacobFrame extends JFrame {
 		this.setTitle("Jacob");
 		this.setExtendedState(this.getExtendedState()
 				| JFrame.MAXIMIZED_BOTH);
+		for(int i=0;i<10;i++){
+			addTab("Tab "+i, new JLabel("label "+i));
+		}
 	}
 
 	/**
@@ -56,4 +60,9 @@ public class JacobFrame extends JFrame {
 		return jacobMenuBar;
 	}
 
+	public void addTab(String title, Component component){
+		int i = getJContentPane().getTabCount();
+		getJContentPane().add(title, component);
+		getJContentPane().setTabComponentAt(i, new ButtonTab(getJContentPane()));
+	}
 }
