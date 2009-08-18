@@ -3,6 +3,7 @@ package com.jcb.util;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -134,5 +135,18 @@ public class CommonUtils {
 	public static Date max(Date d1, Date d2) {
 		return d1.after(d2) ? d1 : d2;
 	}
-
+	
+	public static Date getLastDate(Set<Date>dates, Date date){
+		Date d = null;
+		for (Date dt:dates){
+			if(!dt.after(date)){
+				if(d==null){
+					d = dt;
+				}else if(dt.after(d)){
+					d = dt;
+				}
+			}
+		}
+		return d;
+	}
 }
