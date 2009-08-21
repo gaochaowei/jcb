@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.jcb.bean.EquityPriceBean;
-import com.jcb.bean.PortfolioTrakerBean;
+import com.jcb.bean.PortfolioTrackerBean;
 import com.jcb.bean.PositionBean;
 import com.jcb.bean.PriceInfoBean;
 import com.jcb.io.EquityReader;
@@ -19,9 +19,10 @@ public class Test {
 		System.getProperties().put("proxyPort", "9666");
 		System.getProperties().put("proxyHost", "127.0.0.1");
 
-		PortfolioTrakerBean traker = createPortfolioTraker();
+		PortfolioTrackerBean traker = createPortfolioTraker();
 		PriceInfoBean priceInfo = createPriceInfo();
 		Date date = CommonUtils.getDate("18/03/2009");
+		double prev = 0;
 		while (date.before(new Date())) {
 			date = DateUtils.addDays(date, 1);
 			Map<String, PositionBean> positions = traker.getPortfolio(date)
@@ -34,8 +35,10 @@ public class Test {
 //				System.out.println(symbol+"\t"+quantity+"\t"+price);
 			}
 			if (total >= 0) {
-				System.out.println(date + " | $" + total);
+				System.out.println(date + " \t $" + total+" \t $"+(total-prev));
+				prev = total;
 			}
+			
 		}
 
 		// List<HDBResaleBean> resales = HDBResaleReader.fetchResales(2);
@@ -68,8 +71,8 @@ public class Test {
 		return priceInfo;
 	}
 
-	public static PortfolioTrakerBean createPortfolioTraker() {
-		PortfolioTrakerBean traker = new PortfolioTrakerBean();
+	public static PortfolioTrackerBean createPortfolioTraker() {
+		PortfolioTrackerBean traker = new PortfolioTrackerBean();
 		traker.addBuyTransaction("18/03/2009", "D05.SI", 1000, 7.36, 30.50);
 		traker.addBuyTransaction("18/03/2009", "S68.SI", 1000, 4.76, 29.17);
 		traker.addBuyTransaction("18/03/2009", "F83.SI", 12000, 7.355, 31.35);
@@ -78,7 +81,7 @@ public class Test {
 		traker.addBuyTransaction("28/05/2009", "C38U.SI", 7000, 1.32, 31.89);
 		traker.addBuyTransaction("17/06/2009", "N03.SI", 6000, 1.30, 2.00);
 		traker.addBuyTransaction("16/07/2009", "F83.SI", 10000, 1.23, 41.14);
-		traker.addSellTransaction("17/07/2009", "N03.SI", 6000, 1.57, 36.75);
+		traker.addSellTransaction("17/07/2009", "N03.SI", 7000, 1.57, 36.75);
 		return traker;
 	}
 
