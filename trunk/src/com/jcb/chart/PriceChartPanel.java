@@ -56,8 +56,8 @@ public class PriceChartPanel extends JPanel {
 		plot.setVolumnCoord(volumSpace);
 		fitScreen();
 		List<EquityPriceBean> priceList = EquityReader.fetchEquityPrice(
-				"BS6.SI", DateUtils.addDays(new Date(), -1000), new Date(),
-				Frequency.WEEK);
+				"^STI", CommonUtils.getDate("01/01/1988"), new Date(),
+				Frequency.DATE);
 		setPriceList(priceList);
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent e) {
@@ -116,6 +116,7 @@ public class PriceChartPanel extends JPanel {
 
 	int x = 0;
 
+    @Override
 	protected void paintComponent(Graphics g) {
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		plot.paintAxis(g);
